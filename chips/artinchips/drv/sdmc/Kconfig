@@ -1,0 +1,139 @@
+
+#-----------------------------
+# SDMC devices local parameter
+#-----------------------------
+
+config AIC_CARD_DETECT_BY_GPIO
+    bool "Using SD card detect by GPIO"
+    default n
+    help
+      Enable SD card detect by GPIO. If not enabled, SD card detect will be done by polling.
+
+config AUTO_MOUNT_PATH
+    string "Auto mount path"
+    default "/sdcard"
+    help
+      Auto mount path.
+
+config AUTO_MOUNT_FSTYPE
+    string "Auto mount filesystem type"
+    default "fatfs"
+    help
+      Auto mount filesystem type (fatfs).
+
+config AIC_USING_SDMC0
+    bool "Enable SD/MMC0"
+    default y
+    help
+      Enable SD/MMC0.
+
+# SDMC0 parameter
+menu "SDMC0 Parameter"
+    depends on AIC_USING_SDMC0
+
+    config AIC_SDMC0_DDR_MODE
+        bool "Using DDR mode"
+        default n
+
+    config AIC_SDMC0_IS_SDIO
+        bool "SDMC0 connect to a SDIO device"
+        select AIC_SDMC_IRQ_MODE
+        default n
+
+    config AIC_SDMC0_DRV_PHASE
+        int "SDMC0 driver phase"
+        range 0 3
+        default 3
+
+    config AIC_SDMC0_SMP_PHASE
+        int "SDMC0 sample phase"
+        range 0 3
+        default 0
+
+    config AIC_SDMC0_CLK_FREQ
+        int "SDMC0 CMU clock frequency"
+        range 400 200000
+        default 50000
+endmenu
+
+config AIC_USING_SDMC1
+    bool "Enable SD/MMC1"
+    default y
+    help
+      Enable SD/MMC1.
+
+menu "SDMC1 Parameter"
+    depends on AIC_USING_SDMC1
+
+    config AIC_SDMC1_USING_HOTPLUG
+        bool "Using SDcard hotplug detection"
+        default n
+
+    config AIC_SDMC1_HOTPLUG_PIN
+        string "sdcard hotplug gpio"
+        default "PC.6"
+        depends on AIC_SDMC1_USING_HOTPLUG
+
+    config AIC_SDMC1_IS_SDIO
+        bool "SDMC1 connect to a SDIO device"
+        select AIC_SDMC_IRQ_MODE
+        default n
+
+    config AIC_SDMC1_DRV_PHASE
+        int "SDMC1 driver phase"
+        range 0 3
+        default 3
+
+    config AIC_SDMC1_SMP_PHASE
+        int "SDMC1 sample phase"
+        range 0 3
+        default 0
+
+    config AIC_SDMC1_CLK_FREQ
+        int "SDMC1 CMU clock frequency (KHz)"
+        range 400 200000
+        default 50000
+
+    choice
+        prompt "Select SDMC1 buswidth"
+            default AIC_SDMC1_BUSWIDTH4
+
+        config AIC_SDMC1_BUSWIDTH4
+            bool "SDMC1 buswidth 4bit"
+
+        config AIC_SDMC1_BUSWIDTH8
+            bool "SDMC1 buswidth 8bit"
+        endchoice
+
+        config AIC_SDMC1_DDR_MODE
+            bool "Using DDR mode"
+            default n
+endmenu
+
+config AIC_USING_SDMC2
+    bool "Enable SD/MMC2"
+    default y
+    help
+      Enable SD/MMC2.
+
+# SDMC2 parameter
+menu "SDMC2 Parameter"
+    depends on AIC_USING_SDMC2
+    
+    config AIC_SDMC2_IS_SDIO
+        bool "SDMC2 connect to a SDIO device"
+        select AIC_SDMC_IRQ_MODE
+        default n
+    config AIC_SDMC2_DRV_PHASE
+        int "SDMC2 driver phase"
+        range 0 3
+        default 3
+    config AIC_SDMC2_SMP_PHASE
+        int "SDMC2 sample phase"
+        range 0 3
+        default 0
+    config AIC_SDMC2_CLK_FREQ
+        int "SDMC2 CMU clock frequency"
+        range 400 200000
+        default 50000
+endmenu

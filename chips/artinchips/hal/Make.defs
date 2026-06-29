@@ -1,0 +1,65 @@
+#
+# Copyright (c) 2023-2024, ArtInChip Technology Co., Ltd.
+#
+# SPDX-License-Identifier: Apache-2.0
+#
+
+ARCH_SRC := $(TOPDIR)/arch/$(CONFIG_ARCH)/src
+ARCH_INC := $(TOPDIR)/arch/$(CONFIG_ARCH)/include
+
+ifeq ($(CONFIG_ARCH_CHIP_CUSTOM),y)
+
+# HAL Drivers: CMU (Always enabled for System Clock)
+include $(AIC_VENDOR_DIR)/chips/artinchips/hal/cmu/Make.defs
+
+# HAL Drivers: GPIO (Always enabled for Pinmux)
+include $(AIC_VENDOR_DIR)/chips/artinchips/hal/gpio/Make.defs
+
+# HAL Drivers: UART (Enabled if Console/UART used)
+include $(AIC_VENDOR_DIR)/chips/artinchips/hal/uart/Make.defs
+
+# HAL Drivers: I2C (Enabled if I2C used)
+ifneq ($(filter y,$(CONFIG_AIC_USING_I2C0) $(CONFIG_AIC_USING_I2C1) $(CONFIG_AIC_USING_SOFT_I2C)),)
+include $(AIC_VENDOR_DIR)/chips/artinchips/hal/i2c/Make.defs
+endif
+
+# HAL Drivers: wdt
+ifneq ($(filter y,$(CONFIG_AIC_USING_WDT)),)
+include $(AIC_VENDOR_DIR)/chips/artinchips/hal/wdt/Make.defs
+endif
+
+# HAL Drivers: RTC
+include $(AIC_VENDOR_DIR)/chips/artinchips/hal/rtc/Make.defs
+
+# HAL Drivers: PWM
+include $(AIC_VENDOR_DIR)/chips/artinchips/hal/pwm/Make.defs
+
+
+# HAL Drivers: Audio (Enabled if Audio used)
+ifeq ($(CONFIG_AIC_USING_AUDIO),y)
+include $(AIC_VENDOR_DIR)/chips/artinchips/hal/audio/Make.defs
+endif
+
+# HAL Drivers: DMA core (Enabled if Audio or DMA used)
+ifneq ($(filter y,$(CONFIG_AIC_USING_AUDIO) $(CONFIG_AIC_USING_DMA)),)
+include $(AIC_VENDOR_DIR)/chips/artinchips/hal/dma/Make.defs
+endif
+
+
+# SYSCFG
+VPATH += :chip/hal/syscfg
+DEPPATH += --dep-path chip/hal/syscfg
+
+# HAL Drivers: Qspi (Enabled if QSPI used)
+ifeq ($(CONFIG_DRIVER_QSPI_HAL_EN), y)
+include $(AIC_VENDOR_DIR)/chips/artinchips/hal/qspi/Make.defs
+endif
+
+# HAL Drivers: Sdmc (Enabled if sdmc used)
+ifeq ($(CONFIG_DRIVER_SDMC_HAL_EN), y)
+include $(AIC_VENDOR_DIR)/chips/artinchips/hal/sdmc/Make.defs
+endif
+
+# Shared HAL include paths
+CFLAGS += ${INCDIR_PREFIX}${AIC_SRCDIR}/hal
+endif

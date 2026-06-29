@@ -1,0 +1,22 @@
+#-----------------------------
+# SPI devices local parameter
+#-----------------------------
+
+config AIC_QSPI_DRV
+    bool "Enable QSPI driver v1.0"
+    select SPI_DRIVER
+    select SPI
+    select SPI_EXCHANGE
+    default n
+
+config AIC_QSPI_DRV_V11
+    bool "Enable QSPI driver v1.1"
+    default n
+
+config AIC_QSPI_DRV_V12
+    bool "Enable QSPI driver v1.2"
+    default n
+
+
+
+source "../vendor/artinchip/chips/artinchips/hal/qspi/Kconfig"

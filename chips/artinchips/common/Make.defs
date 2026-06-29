@@ -1,0 +1,26 @@
+#
+# Copyright (c) 2023-2024, ArtInChip Technology Co., Ltd.
+#
+# SPDX-License-Identifier: Apache-2.0
+#
+
+SRC_COMMON_PATH=common
+
+
+DEPPATH+=--dep-path $(SRC_COMMON_PATH) 
+VPATH+=:chip/$(SRC_COMMON_PATH)
+
+ARCH_COMMON_SRC_PATH:=$(AIC_SRCDIR)/$(SRC_COMMON_PATH)
+ARCH_COMMON_PARENT_SRC_PATH:=$(AIC_SRCDIR)
+
+CFLAGS += ${INCDIR_PREFIX}$(ARCH_COMMON_SRC_PATH)
+CFLAGS += ${INCDIR_PREFIX}${AIC_SRCDIR}
+
+# Include the  module.
+
+CHIP_CSRCS += $(SRC_COMMON_PATH)/utils/aic_time.c
+CHIP_CSRCS += $(SRC_COMMON_PATH)/utils/aic_string.c
+CHIP_CSRCS += $(SRC_COMMON_PATH)/private_param/private_param.c
+CHIP_CSRCS += $(SRC_COMMON_PATH)/partition/disk_part.c
+CHIP_CSRCS += $(SRC_COMMON_PATH)/partition/partition.c
+

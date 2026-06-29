@@ -1,0 +1,11 @@
+choice
+    prompt "chose cmu version"
+    default AIC_V1_CMU
+    help
+        chose cmu version
+  config AIC_V1_CMU
+  bool "AIC_V1_CMU"
+
+  config AIC_V2_CMU
+  bool "AIC_V2_CMU"
+endchoice

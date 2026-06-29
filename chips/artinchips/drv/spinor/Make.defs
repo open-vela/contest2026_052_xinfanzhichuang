@@ -1,0 +1,24 @@
+#
+# Copyright (c) 2023-2024, ArtInChip Technology Co., Ltd.
+#
+# SPDX-License-Identifier: Apache-2.0
+#
+
+DRV_SOURCE_PATH=drv
+DRV_SPINOR_PATH=drv/spinor
+
+DEPPATH+=--dep-path $(DRV_SPINOR_PATH) 
+VPATH+=:chip/$(DRV_SPINOR_PATH)
+
+ARCH_SPINOR_SRC_PATH:=$(AIC_SRCDIR)/$(DRV_SPINOR_PATH)
+ARCH_SPINOR_PARENT_SRC_PATH:=$(AIC_SRCDIR)/$(DRV_SOURCE_PATH)
+
+CFLAGS += ${INCDIR_PREFIX}$(ARCH_SPINOR_SRC_PATH)
+CFLAGS += ${INCDIR_PREFIX}${AIC_SRCDIR}/include/drv/inc
+
+# Include the  module.
+
+CHIP_CSRCS += $(DRV_SPINOR_PATH)/spinor_flash.c
+
+CHIP_CSRCS += $(DRV_SPINOR_PATH)/partition.c 
+CHIP_CSRCS += $(DRV_SPINOR_PATH)/aic_flash_xip_def.c

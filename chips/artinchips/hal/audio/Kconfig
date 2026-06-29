@@ -1,0 +1,4 @@
+config  AIC_USING_AUDIO
+  bool "aic_display hal"
+  depends on AIC_USING_DMA
+	default n

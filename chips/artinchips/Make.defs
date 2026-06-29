@@ -1,0 +1,109 @@
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+
+ifeq ($(CONFIG_ARCH_CHIP_CUSTOM),y)
+CONFIG_ARCH_CHIP_CUSTOM_DIR_UNQUOTED := $(patsubst "%",%,$(CONFIG_ARCH_CHIP_CUSTOM_DIR))
+ifeq ($(CONFIG_ARCH_CHIP_CUSTOM_DIR_UNQUOTED),../contest2026_052_xinfanzhichuang/chips/artinchips)
+
+# ----------------------------------------------------------------------------
+# Path Definitions
+# ----------------------------------------------------------------------------
+AIC_SRCDIR     = $(TOPDIR)/$(patsubst "%",%,$(CONFIG_ARCH_CHIP_CUSTOM_DIR))
+AIC_VENDOR_DIR    = $(TOPDIR)/../contest2026_052_xinfanzhichuang
+
+# ----------------------------------------------------------------------------
+# Source Files
+# ----------------------------------------------------------------------------
+
+
+
+# Include sub-directories Make.defs
+include $(AIC_VENDOR_DIR)/chips/artinchips/include/Make.defs
+
+include $(AIC_VENDOR_DIR)/chips/artinchips/hal/Make.defs
+include $(AIC_VENDOR_DIR)/chips/artinchips/drv/Make.defs
+include $(AIC_VENDOR_DIR)/chips/artinchips/peripheral/Make.defs
+include $(AIC_VENDOR_DIR)/chips/artinchips/common/Make.defs
+
+# Arch/Chip specific files
+
+ifeq ($(CONFIG_ARCH_CHIP_D13X),y)
+include $(AIC_VENDOR_DIR)/chips/artinchips/d13x/Make.defs
+endif
+
+# HAL Drivers: Display Engine (DE)
+ifeq ($(CONFIG_AIC_DE_DRV),y)
+CHIP_CSRCS += hal/display/aic_hal_de.c
+CHIP_CSRCS += drv/display/drv_de_core.c
+CHIP_CSRCS += drv/display/drv_de_ui_layer.c
+CHIP_CSRCS += drv/display/drv_de_vi_layer.c
+VPATH += :chip/hal/display
+DEPPATH += --dep-path chip/hal/display
+VPATH += :chip/drv/display
+DEPPATH += --dep-path chip/drv/display
+endif
+
+# HAL Drivers: RGB Display Interface
+ifeq ($(CONFIG_AIC_DISP_RGB_DRV),y)
+CHIP_CSRCS += hal/display/aic_hal_rgb.c
+CHIP_CSRCS += drv/display/drv_rgb.c
+endif
+
+# HAL Drivers: Framebuffer
+ifeq ($(CONFIG_AIC_DISPLAY_DRV),y)
+CHIP_CSRCS += drv/display/drv_fb.c
+CHIP_CSRCS += drv/display/drv_fb_helper.c
+ifeq ($(CONFIG_LCD),y)
+CHIP_CSRCS += drv/display/drv_lcd.c
+endif
+endif
+
+# Panel Drivers
+ifeq ($(CONFIG_AIC_SIMPLE_PANEL),y)
+CHIP_CSRCS += drv/display/panel/panel_simple.c
+CHIP_CSRCS += drv/display/panel/panel_com.c
+VPATH += :chip/drv/display/panel
+DEPPATH += --dep-path chip/drv/display/panel
+endif
+
+
+# ----------------------------------------------------------------------------
+# Configuration
+# ----------------------------------------------------------------------------
+
+# Add chip directory to VPATH (for artinchip_head.S)
+# Use relative paths to avoid mkdeps issues with absolute paths containing ..
+VPATH += :chip
+DEPPATH += --dep-path chip
+
+#contest2026_052_xinfanzhichuang 仓库的 Git Commit ID (前8位)
+AIC_GIT_REV := $(shell cd $(TOPDIR)/../contest2026_052_xinfanzhichuang && git rev-parse --short HEAD 2>/dev/null || echo "unknown")
+
+#将其定义为全局宏传递给编译器
+CFLAGS += -DARTINCHIP_GIT_REVERSION=\"$(AIC_GIT_REV)\"
+CXXFLAGS += -DARTINCHIP_GIT_REVERSION=\"$(AIC_GIT_REV)\"
+
+# Add global includes once (avoid duplication in driver Make.defs)
+CFLAGS += ${INCDIR_PREFIX}${INCLUDES}
+CXXFLAGS += ${INCDIR_PREFIX}${INCLUDES}
+endif
+endif
+
+
+#---------------------------------------------------------------------------
+# Section 7: Build Path Setup
+#---------------------------------------------------------------------------
+VPATH      += $(ARCH_SRCDIR)
+CHIP_CSRCS := $(patsubst %,chip/%,$(CHIP_CSRCS))
+HEAD_ASRC := $(patsubst %,chip/%,$(HEAD_ASRC))

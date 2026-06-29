@@ -1,0 +1,33 @@
+/dts-v1/;
+
+/ {
+	description = "nuttx-artinchip firmware";
+	#address-cells = <1>;
+
+	images {
+		version = "1.0.0";
+		seg0 {
+			description = "Artinchip segment 0";
+			data = /incbin/("./nuttx.bin");
+			type = "firmware";
+			arch = "riscv";
+			os = "artinchip";
+			load = <0x40000000>;
+			entry = <0x40000000>;
+			hash-1 {
+				algo = "crc32";
+			};
+			hash-2 {
+				algo = "md5";
+			};
+		};
+	};
+
+	configurations {
+		default = "conf-1";
+		conf-1 {
+			description = "nuttx-artinchip firmware";
+			firmware = "seg0";
+		};
+	};
+};

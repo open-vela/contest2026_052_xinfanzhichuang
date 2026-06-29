@@ -1,0 +1,93 @@
+OUTPUT_ARCH(riscv)
+ENTRY(__start)
+
+/* Memory Layout for D13X
+ * Based on vendor/artinchip/bsp/artinchip/sys/d13x/link_script/gcc_aic.ld.S
+ *
+ * Memory Configuration:
+ *   - 32 KB BROM    : Boot ROM (not mapped in script)
+ *   - 32 KB SRAM    : Internal SRAM @ 0x30040000
+ *   - PSRAM Options : External PSRAM/SIP @ 0x40000000
+ *     - 32 Mb  (4 MB)  : 8-bit DDR, up to 200 MHz
+ *
+ * PSRAM Clock: Supports spread spectrum clocking
+ *
+ * Uncomment the appropriate PSRAM configuration below
+ */
+
+/* PSRAM Size Configuration - Select ONE */
+/* #define PSRAM_SIZE 16M */  /* 128 Mb */
+/* #define PSRAM_SIZE 4M */   /* 32 Mb  */
+#define PSRAM_SIZE 8M         /* 64 Mb  - Default */
+
+MEMORY
+{
+    /* Internal SRAM (32KB) - For BootROM/Data or special purpose */
+    isram (rwx) : ORIGIN = 0x30040000, LENGTH = 512K
+
+    /* XIP Flash mapping (Read-Only Code) - Uncomment if using XIP */
+    /* flash (rx)  : ORIGIN = 0x60000000, LENGTH = 8M */
+
+    /* PSRAM (Read-Write-Exec) - Main Memory */
+    psram (rwx) : ORIGIN = 0x40000000, LENGTH = PSRAM_SIZE
+}
+
+SECTIONS
+{
+    .text : {
+        _stext = .;
+        KEEP(*(.start_jump))
+        *(.vectors)
+        *(.text .text.*)
+        *(.rodata .rodata.*)
+        *(.srodata .srodata.*)
+        . = ALIGN(4);
+        _sinit = ABSOLUTE(.);
+        /* Keep C++ constructors in .init_array, but filter out toolchain
+         * runtime constructors that may require unsupported EH/thread runtime.
+         */
+        *(.init)
+        *(.fini)
+        KEEP(*(SORT_BY_INIT_PRIORITY(.init_array.*)))
+        KEEP(*(EXCLUDE_FILE(*crtbegin.o *crtbegin?.o *crtend.o *crtend?.o *libsupc++.a* *libstdc++.a*) .init_array))
+        _einit = ABSOLUTE(.);
+
+        . = ALIGN(4);
+        _etext = .;
+    } > psram
+
+    .data : {
+        _sdata = .;
+        PROVIDE( __global_pointer$ = . + 0x800 );
+        *(.data .data.*)
+        *(.sdata .sdata.*)
+        . = ALIGN(4);
+        _edata = .;
+    } > psram
+
+    .bss : {
+        _sbss = .;
+        *(.bss .bss.*)
+        *(.sbss .sbss.*)
+        *(COMMON)
+        . = ALIGN(4);
+        _ebss = .;
+    } > psram
+
+    /* Stack definition */
+    .stack (NOLOAD) : {
+        . = ALIGN(16);
+        _ebss_aligned = .;
+        . = . + 8192; /* Define a default stack size, e.g. 8KB */
+        . = ALIGN(16);
+        _estack = .;
+    } > psram
+
+    /* Heap definition */
+    .heap (NOLOAD) : {
+        . = ALIGN(4);
+        _sheap = .;
+        . = ALIGN(4);
+        _eheap = ORIGIN(psram) + LENGTH(psram);
+    } > psram
+}

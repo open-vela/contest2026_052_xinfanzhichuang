@@ -1,0 +1,20 @@
+#
+# Copyright (c) 2023-2024, ArtInChip Technology Co., Ltd.
+#
+# SPDX-License-Identifier: Apache-2.0
+#
+
+DRV_SOURCE_PATH=drv
+DRV_WDT_PATH=drv/wdt
+
+DEPPATH+=--dep-path $(DRV_WDT_PATH) 
+VPATH+=:chip/$(DRV_WDT_PATH)
+
+ARCH_WDT_SRC_PATH:=$(AIC_SRCDIR)/$(DRV_WDT_PATH)
+ARCH_WDT_PARENT_SRC_PATH:=$(AIC_SRCDIR)/$(DRV_SOURCE_PATH)
+
+CFLAGS += ${INCDIR_PREFIX}$(ARCH_WDT_SRC_PATH)
+
+# Include the  module.
+
+CHIP_CSRCS += $(DRV_WDT_PATH)/aic_drv_wdt.c

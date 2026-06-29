@@ -1,0 +1,3 @@
+config AIC_USING_DMA
+    bool "using DMA"
+    default n

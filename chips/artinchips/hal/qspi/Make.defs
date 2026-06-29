@@ -1,0 +1,26 @@
+# HAL Drivers: QSPI (Enabled if qspi used)
+
+
+
+
+DRV_SOURCE_PATH=hal
+QSPI_PATH=hal/qspi
+
+DEPPATH+=--dep-path $(QSPI_PATH) 
+VPATH+=:chip/$(QSPI_PATH)
+
+ARCH_QSPI_SRC_PATH:=$(AIC_SRCDIR)/$(QSPI_PATH)
+ARCH_QSPI_PARENT_SRC_PATH:=$(AIC_SRCDIR)/$(DRV_SOURCE_PATH)
+
+CFLAGS += ${INCDIR_PREFIX}$(ARCH_QSPI_SRC_PATH)
+
+# Include the  module.
+CHIP_CSRCS += $(QSPI_PATH)/qspi_internal.c
+
+
+ifneq (,$(filter y,$(CONFIG_AIC_QSPI_DRV_V11) $(CONFIG_AIC_QSPI_DRV_V12)))
+CHIP_CSRCS += $(QSPI_PATH)/hal_qspi_v1x.c
+else
+CHIP_CSRCS += $(QSPI_PATH)/hal_qspi_v2x.c
+endif
+
