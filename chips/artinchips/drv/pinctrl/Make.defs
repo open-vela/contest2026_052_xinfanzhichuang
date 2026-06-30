@@ -1,0 +1,16 @@
+#
+# Copyright (c) 2024, ArtInChip Technology Co., Ltd.
+#
+# SPDX-License-Identifier: Apache-2.0
+#
+
+ifeq ($(CONFIG_ARCH_CHIP_CUSTOM),y)
+
+ifeq ($(CONFIG_PINCTRL),y)
+CHIP_CSRCS += aic_drv_pinctrl.c
+endif
+
+VPATH += :chip/drv/pinctrl
+DEPPATH += --dep-path chip/drv/pinctrl
+
+endif

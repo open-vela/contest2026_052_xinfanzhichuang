@@ -1,0 +1,143 @@
+#-----------------------------
+# spinor driver local parameter
+#-----------------------------
+
+config AIC_USING_QSPI0
+    bool "Using SPI0"
+    default n
+
+config SFUD_DEBUG_MODE
+    bool "debug for flash"
+    depends on DEBUG_FEATURES
+    default n
+
+config SFUD_DEBUG_INFO
+    bool "debug for flash info"
+    depends on SFUD_DEBUG_MODE
+    default n
+
+config SFUD_DEBUG_ERR
+    bool "debug for flash error"
+    depends on SFUD_DEBUG_MODE
+    default n
+
+config SFUD_DEBUG_WARN
+    bool "debug for flash warn"
+    depends on SFUD_DEBUG_MODE
+    default n
+
+
+menuconfig AIC_QSPI0_DEVICE_SPINOR
+    bool "SPI0 Devices: SPINOR"
+    depends on AIC_USING_QSPI0
+    default n
+
+if AIC_QSPI0_DEVICE_SPINOR
+    config AIC_QSPI0_DEVICE_SPINOR_FREQ
+        int "SPINOR bus frequency(Hz)"
+	default 100000000
+
+    config AIC_DEV_QSPI0_DELAY_MODE
+        int "RX Data Sample Delay"
+    default 2
+    range 0 3
+
+    config AIC_DEV_QSPI0_MAX_SRC_FREQ_HZ
+        int "Max frequency(Hz)"
+        default 100000000
+
+    config AIC_QSPI0_BUS_WIDTH
+        int
+        default 1 if AIC_QSPI0_BUS_WIDTH_1
+        default 4 if AIC_QSPI0_BUS_WIDTH_4
+
+    choice
+        prompt "Set SPI0 bus width"
+        default AIC_QSPI0_BUS_WIDTH_4
+        config AIC_QSPI0_BUS_WIDTH_1
+            bool "Standard"
+        config AIC_QSPI0_BUS_WIDTH_4
+            bool "Quad"
+    endchoice
+
+endif
+
+config AIC_USING_QSPI1
+    bool "Using SPI1"
+    default n
+
+menuconfig AIC_QSPI1_DEVICE_SPINOR
+    bool "SPI1 Devices: SPINOR"
+    depends on AIC_USING_QSPI1
+    default n
+
+if AIC_QSPI1_DEVICE_SPINOR
+    config AIC_QSPI1_DEVICE_SPINOR_FREQ
+        int "SPINOR bus frequency(Hz)"
+	default 100000000
+
+endif
+
+config AIC_USING_QSPI2
+    bool "Using SPI2"
+    default n
+
+menuconfig AIC_QSPI2_DEVICE_SPINOR
+    bool "SPI2 Devices: SPINOR"
+    depends on AIC_USING_QSPI2
+    default n
+
+if AIC_QSPI2_DEVICE_SPINOR
+    config AIC_QSPI2_DEVICE_SPINOR_FREQ
+        int "SPINOR bus frequency(Hz)"
+	default 100000000
+
+endif
+
+config AIC_USING_QSPI3
+    bool "Using SPI3"
+    default n
+
+menuconfig AIC_QSPI3_DEVICE_SPINOR
+    bool "SPI3 Devices: SPINOR"
+    depends on AIC_USING_QSPI3
+    default n
+
+if AIC_QSPI3_DEVICE_SPINOR
+    config AIC_QSPI3_DEVICE_SPINOR_FREQ
+        int "SPINOR bus frequency(Hz)"
+	default 100000000
+
+endif
+
+config AIC_USING_QSPI4
+    bool "Using SPI4"
+    default n
+
+menuconfig AIC_QSPI4_DEVICE_SPINOR
+    bool "SPI4 Devices: SPINOR"
+    depends on AIC_USING_QSPI4
+    default n
+
+if AIC_QSPI4_DEVICE_SPINOR
+    config AIC_QSPI4_DEVICE_SPINOR_FREQ
+        int "SPINOR bus frequency(Hz)"
+	default 100000000
+
+endif
+
+config AIC_USING_SE_SPI
+    bool "Using SE_SPI"
+    default n
+
+menuconfig AIC_SE_SPI_DEVICE_SPINOR
+    bool "SE_SPI Devices: SPINOR"
+    depends on AIC_USING_SE_SPI
+    default n
+
+if AIC_SE_SPI_DEVICE_SPINOR
+    config AIC_SE_SPI_DEVICE_SPINOR_FREQ
+        int "SPINOR bus frequency(Hz)"
+	default 50000000
+
+endif

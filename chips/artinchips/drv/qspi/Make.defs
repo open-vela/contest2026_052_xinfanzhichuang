@@ -1,0 +1,20 @@
+#
+# Copyright (c) 2023-2024, ArtInChip Technology Co., Ltd.
+#
+# SPDX-License-Identifier: Apache-2.0
+#
+
+DRV_SOURCE_PATH=drv
+DRV_QSPI_PATH=drv/qspi
+
+DEPPATH+=--dep-path $(DRV_QSPI_PATH) 
+VPATH+=:chip/$(DRV_QSPI_PATH)
+
+ARCH_QSPI_SRC_PATH:=$(AIC_SRCDIR)/$(DRV_QSPI_PATH)
+ARCH_QSPI_PARENT_SRC_PATH:=$(AIC_SRCDIR)/$(DRV_SOURCE_PATH)
+
+CFLAGS += ${INCDIR_PREFIX}$(ARCH_QSPI_SRC_PATH)
+
+# Include the  module.
+
+CHIP_CSRCS += $(DRV_QSPI_PATH)/drv_qspi.c

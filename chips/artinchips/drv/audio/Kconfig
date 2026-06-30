@@ -1,0 +1,133 @@
+#-----------------------------
+# devices local parameter
+#-----------------------------
+
+menu "Audio Parameter"
+    depends on AIC_USING_AUDIO
+
+    config AIC_AUDIO_PLAYBACK
+        bool "Using Playback"
+        default y
+
+    choice
+        prompt "Select Audio Transfer Mode"
+        default AIC_AUDIO_USE_DMA
+        depends on AIC_AUDIO_PLAYBACK
+
+        config AIC_AUDIO_USE_DMA
+            bool "Use DMA mode"
+            depends on AIC_USING_DMA
+            ---help---
+                audio implement over DMA
+
+        config AIC_AUDIO_USE_ISR
+            bool "Use ISR mode"
+            ---help---
+                audio implement over isr
+
+        config AIC_AUDIO_USE_CPU
+            bool "Use CPU polling mode"
+            ---help---
+                Stream PCM samples to TXFIFO directly from a kernel thread,
+                without using DMA. This is intended as a simpler fallback path
+                when DMA playback is unstable or still under debug.
+    endchoice
+
+    config AIC_AUDIO_USE_DMA_ENGINE
+        bool "Use NuttX generic audio_dma lower-half"
+        default n
+        depends on AIC_AUDIO_USE_DMA
+        select AUDIO_DMA
+        ---help---
+            Reuse the upstream NuttX audio_dma engine for ping-pong DMA.
+            The AIC platform layer only binds DMA, codec/PWM registers and
+            buffer allocation, and does not duplicate DMA queue logic.
+
+    config AIC_AUDIO_DMA_CHANNEL
+        int "Audio DMA channel id"
+        default 0
+        depends on AIC_AUDIO_USE_DMA_ENGINE
+        ---help---
+            Logical DMA channel identifier passed to audio_dma_initialize().
+            The current AIC DMA adapter allocates the next free hardware
+            channel, but keeping the option makes BSP integration explicit.
+
+    config AUDIO_DMA_CUSTOM_ALLOC
+        bool
+        default y if AIC_AUDIO_USE_DMA_ENGINE
+
+    config AIC_AUDIO_DMA_USE_CMA
+        bool "Allocate audio DMA buffers from CMA/coherent memory"
+        default y
+        depends on AIC_AUDIO_USE_DMA_ENGINE
+        ---help---
+            Use the ArtInChip aligned allocator for DMA buffers. When a CMA
+            region is available, MEM_CMA is selected; otherwise allocation
+            falls back to the default aligned memory pool.
+
+    config AIC_AUDIO_PDM_MODULATION_MODE
+        bool "Using PDM Mode Output"
+        default n
+        depends on AIC_AUDIO_PLAYBACK
+
+    config AIC_AUDIO_PA_ENABLE_GPIO
+        string "PA enable pin"
+        default "PA.7"
+        depends on AIC_AUDIO_PLAYBACK
+
+    if AIC_AUDIO_PLAYBACK
+        choice
+            prompt "Select PA enable level"
+            default AIC_AUDIO_EN_PIN_HIGH
+
+            config  AIC_AUDIO_EN_PIN_HIGH
+                bool "high level Active"
+
+            config  AIC_AUDIO_EN_PIN_LOW
+                bool "low level Active"
+        endchoice
+
+        choice
+            prompt "Select SPK channel"
+            default AIC_AUDIO_SPK_0_1
+
+            config AIC_AUDIO_SPK_0
+                bool "Using SPK0"
+
+            config AIC_AUDIO_SPK_1
+                bool "Using SPK1"
+
+            config AIC_AUDIO_SPK_0_1
+                bool "Using SPK0 and SPK1"
+        endchoice
+
+        if AIC_AUDIO_SPK_0_1
+        choice
+            prompt "Select SPK output mode"
+            default AIC_AUDIO_SPK_OUTPUT_SINGLE
+
+            config AIC_AUDIO_SPK_OUTPUT_SINGLE
+                bool "single output"
+
+            config AIC_AUDIO_SPK0_OUTPUT_DIFFERENTIAL
+                bool "SPK0 differential output"
+
+            config AIC_AUDIO_SPK1_OUTPUT_DIFFERENTIAL
+                bool "SPK1 differential output"
+        endchoice
+        endif
+    endif
+
+    if AIC_AUDIO_DRV_V10 || AIC_AUDIO_DRV_V11
+        config AIC_AUDIO_DMIC
+            bool "Using DMIC"
+            default y
+    endif
+
+    if AIC_AUDIO_DRV_V10
+        config AIC_AUDIO_AMIC
+            bool "Using AMIC"
+            default n
+    endif
+
+endmenu

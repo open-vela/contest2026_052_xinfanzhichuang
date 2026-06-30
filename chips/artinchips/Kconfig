@@ -1,0 +1,135 @@
+#
+# For a description of the syntax of this configuration file,
+# see the file kconfig-language.txt in the NuttX tools repository.
+#
+
+choice
+	prompt "ArtInChip Chip Selection"
+	default ARCH_CHIP_D12X
+
+config ARCH_CHIP_D12X
+	bool "D12X series"
+	select ARCH_RV32
+	select ARCH_RV_ISA_M
+	select ARCH_RV_ISA_A
+	select ARCH_RV_ISA_C
+	select ARCH_HAVE_FPU
+	select ARCH_FPU
+    select ARCH_HAVE_RESET
+
+config ARCH_CHIP_D13X
+	bool "D13X series"
+	select ARCH_RV32
+	select ARCH_RV_ISA_M
+	select ARCH_RV_ISA_A
+	select ARCH_RV_ISA_C
+	select ARCH_HAVE_FPU
+	select ARCH_FPU
+    select ARCH_HAVE_RESET
+    select ONESHOT_COUNT if ONESHOT
+
+endchoice
+
+if ARCH_CHIP_D12X || ARCH_CHIP_D13X
+
+menu "AIC Chip Configuration"
+
+#---------------------------
+# uart device global option
+#---------------------------
+config AIC_USING_UART0
+    bool "Using Uart0"
+    default n
+
+config AIC_USING_UART1
+    bool "Using Uart1"
+    default n
+
+config AIC_USING_UART2
+    bool "Using Uart2"
+    default n
+
+config AIC_USING_UART3
+    bool "Using Uart3"
+    default n
+if ARCH_CHIP_D13X
+config AIC_USING_UART4
+    bool "Using Uart4"
+    default n
+
+config AIC_USING_UART5
+    bool "Using Uart5"
+    default n
+
+config AIC_USING_UART6
+    bool "Using Uart6"
+    default n
+
+config AIC_USING_UART7
+    bool "Using Uart7"
+    default n
+endif
+menu "Display Support"
+source "../vendor/artinchip/chips/artinchips/drv/display/Kconfig"
+endmenu
+
+
+#---------------------------
+# i2c device global option
+#---------------------------
+config AIC_USING_SOFT_I2C
+    bool "Using SOFT_I2C"
+    default n
+	select I2C           # 开启总线级 I2C 支持 (关键)
+    select I2C_DRIVER    # 开启字符设备接口 (/dev/i2c-x)
+
+config AIC_USING_I2C0
+    bool "Using I2C0"
+    default n
+	select I2C           # 开启总线级 I2C 支持 (关键)
+    select I2C_DRIVER    # 开启字符设备接口 (/dev/i2c-x)
+
+config AIC_USING_I2C1
+    bool "Using I2C1"
+    default n
+	select I2C           # 开启总线级 I2C 支持 (关键)
+    select I2C_DRIVER    # 开启字符设备接口 (/dev/i2c-x)
+
+config AIC_USING_PWM
+    bool "Using PWM"
+    default n
+	depends on PWM           # 开启总线级 PWM 支持 (关键)
+
+if AIC_USING_PWM
+    config AIC_USING_PWM0
+        bool "Using PWM0"
+        default n
+    config AIC_USING_PWM1
+        bool "Using PWM1"
+        default n
+if ARCH_CHIP_D13X
+    config AIC_USING_PWM2
+        bool "Using PWM2"
+        default n
+    config AIC_USING_PWM3
+        bool "Using PWM3"
+        default n
+endif
+endif
+
+config AIC_USING_CTP
+    bool "using CTP"
+    default n
+
+
+if AIC_USING_CTP
+    source "../vendor/artinchip/chips/artinchips/peripheral/touch/Kconfig"
+endif
+
+source "../contest2026_052_xinfanzhichuang/chips/artinchips/drv/Kconfig"
+source "../vendor/artinchip/chips/artinchips/hal/Kconfig"
+
+endmenu
+
+
+endif

@@ -1,0 +1,26 @@
+#
+# Copyright (c) 2024, ArtInChip Technology Co., Ltd.
+#
+# SPDX-License-Identifier: Apache-2.0
+#
+
+
+
+DRV_SOURCE_PATH=drv
+DRV_GPIO_PATH=drv/gpio
+
+DEPPATH+=--dep-path $(DRV_GPIO_PATH) 
+VPATH+=:chip/$(DRV_GPIO_PATH)
+
+ARCH_GPIO_SRC_PATH:=$(AIC_SRCDIR)/$(DRV_GPIO_PATH)
+ARCH_GPIO_PARENT_SRC_PATH:=$(AIC_SRCDIR)/$(DRV_SOURCE_PATH)
+
+CFLAGS += ${INCDIR_PREFIX}$(ARCH_GPIO_SRC_PATH)
+
+# Include the  module.
+
+CHIP_CSRCS += $(DRV_GPIO_PATH)/aic_drv_gpio.c
+
+ifeq ($(CONFIG_INPUT_BUTTONS),y)
+CHIP_CSRCS += $(DRV_GPIO_PATH)/aic_gpio_button.c
+endif

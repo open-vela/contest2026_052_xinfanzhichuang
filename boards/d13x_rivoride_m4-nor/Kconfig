@@ -1,0 +1,82 @@
+
+
+config D13X_RIVORIDE_M4_NSH
+	bool "Enable the NSH fucntion on the 'D13X_RIVORIDE_M4' board"
+
+config D13X_RIVORIDE_M4_OTA
+	bool "Enable the OTA fucntion on the 'D13X_RIVORIDE_M4' board"
+
+config ARCH_BOARD_D13X_RIVORIDE_M4
+    select ARCH_FPU
+    select ARCH_RV_ISA_M
+    select ARCH_RV_ISA_A
+    select ARCH_RV_ISA_C
+    bool "Enable the 'D13X_RIVORIDE_M4' board"
+
+config AIC_CLK_PLL_INT0_FREQ
+    int
+    default 480000000
+    help
+      The frequency of the PLL INT0 output in Hz.
+
+config AIC_CLK_PLL_INT1_FREQ
+    int
+    default 1200000000
+    help
+      The frequency of the PLL INT1 output in Hz.
+
+config AIC_CLK_PLL_FRA0_FREQ
+    int
+    default 792000000
+    help
+      The frequency of the PLL FRA0 output in Hz.
+
+config AIC_CLK_PLL_FRA2_FREQ
+    int
+    default 1188000000
+    help
+      The frequency of the PLL FRA2 output in Hz.
+
+config AIC_CLK_CPU_FREQ
+    int
+    default 480000000
+    help
+      The frequency of the CPU output in Hz.
+
+config AIC_CLK_AXI0_FREQ
+    int
+    default 200000000
+    help
+      The frequency of the AXI0 output in Hz.
+
+config AIC_CLK_AHB0_FREQ
+    int
+    default 200000000
+    help
+      The frequency of the AXI1 output in Hz.
+
+config AIC_CLK_APB0_FREQ
+    int
+    default 100000000
+    help
+      The frequency of the APB0 output in Hz.
+
+
+if ARCH_BOARD_D13X_RIVORIDE_M4
+
+choice
+    prompt "Target Board Selection"
+    default AIC_TARGET_D13X_RIVORIDE_M4_NOR
+    help
+      Select the target board configuration.
+
+config AIC_TARGET_D13X_RIVORIDE_M4_NOR
+    bool "D13X Demo NOR"
+
+endchoice
+
+config AIC_TARGET_DIR_NAME
+    string
+    default "d13x_rivoride_m4-nor" if AIC_TARGET_D13X_RIVORIDE_M4_NOR
+
+endif

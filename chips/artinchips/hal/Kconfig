@@ -1,0 +1,17 @@
+source "../vendor/artinchip/chips/artinchips/hal/cmu/Kconfig"
+
+config  DRIVER_QSPI_HAL_EN
+  bool "QSPI hal"
+	default n
+
+if DRIVER_QSPI_HAL_EN
+source "../vendor/artinchip/chips/artinchips/hal/qspi/Kconfig"
+endif
+
+config  DRIVER_SDMC_HAL_EN
+  bool "SDMC hal"
+	default n
+
+if DRIVER_SDMC_HAL_EN
+source "../vendor/artinchip/chips/artinchips/hal/sdmc/Kconfig"
+endif
