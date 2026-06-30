@@ -1,0 +1,12 @@
+#
+# Copyright (c) 2023-2024, ArtInChip Technology Co., Ltd.
+#
+# SPDX-License-Identifier: Apache-2.0
+#
+
+ifeq ($(CONFIG_ARCH_CHIP_CUSTOM),y)
+
+# Include Peripheral Categories
+include chip/peripheral/touch/Make.defs
+
+endif

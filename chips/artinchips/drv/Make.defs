@@ -1,0 +1,71 @@
+#
+# Copyright (c) 2023-2024, ArtInChip Technology Co., Ltd.
+#
+# SPDX-License-Identifier: Apache-2.0
+#
+
+ARCH_DRV_SRC := $(TOPDIR)/arch/$(CONFIG_ARCH)/src
+ARCH_DRV_INC := $(TOPDIR)/arch/$(CONFIG_ARCH)/include
+
+ifeq ($(CONFIG_ARCH_CHIP_CUSTOM),y)
+
+include $(AIC_VENDOR_DIR)/chips/artinchips/drv/timer/Make.defs
+
+# Include UART and Timer
+include $(AIC_VENDOR_DIR)/chips/artinchips/drv/uart/Make.defs
+
+ifeq ($(CONFIG_AIC_USING_I2C),y)
+include $(AIC_VENDOR_DIR)/chips/artinchips/drv/i2c/Make.defs
+endif
+
+include $(AIC_VENDOR_DIR)/chips/artinchips/drv/gpio/Make.defs
+include $(AIC_VENDOR_DIR)/chips/artinchips/drv/pinctrl/Make.defs
+
+ifeq ($(CONFIG_AIC_USING_WDT),y)
+  include $(AIC_VENDOR_DIR)/chips/artinchips/drv/wdt/Make.defs
+endif
+
+ifeq ($(CONFIG_AIC_USING_RTC),y)
+  include $(AIC_VENDOR_DIR)/chips/artinchips/drv/rtc/Make.defs
+endif
+
+ifeq ($(CONFIG_AIC_USING_PWM),y)
+include $(AIC_VENDOR_DIR)/chips/artinchips/drv/pwm/Make.defs
+endif
+
+
+# SPI/QSPI 驱动
+ifeq ($(CONFIG_AIC_QSPI_DRV),y)
+  include $(AIC_VENDOR_DIR)/chips/artinchips/drv/qspi/Make.defs
+  include $(AIC_VENDOR_DIR)/chips/artinchips/drv/spi/Make.defs
+endif
+
+ifeq ($(CONFIG_USING_MTD),y)
+  include $(AIC_VENDOR_DIR)/chips/artinchips/drv/mtd/Make.defs
+endif
+
+# SPINOR 驱动
+ifeq ($(CONFIG_AIC_SPINOR_DRV),y)
+  include $(AIC_VENDOR_DIR)/chips/artinchips/drv/spinor/Make.defs
+endif
+
+ifeq ($(CONFIG_USING_SFUD),y)
+  include $(AIC_VENDOR_DIR)/chips/artinchips/drv/sfud/Make.defs
+endif
+
+ifeq ($(CONFIG_AIC_USING_DMA),y)
+include $(AIC_VENDOR_DIR)/chips/artinchips/drv/dma/Make.defs
+endif
+
+ifeq ($(CONFIG_AIC_USING_AUDIO),y)
+include $(AIC_VENDOR_DIR)/chips/artinchips/drv/audio/Make.defs
+endif
+
+ifeq ($(CONFIG_AIC_SDMC_DRV),y)
+  include $(AIC_VENDOR_DIR)/chips/artinchips/drv/sdmc/Make.defs
+endif
+
+# Shared DRV include path
+CFLAGS += ${INCDIR_PREFIX}${AIC_SRCDIR}/drv
+
+endif

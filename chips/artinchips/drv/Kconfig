@@ -1,0 +1,127 @@
+#-----------------------------
+# spinor driver local parameter
+#-----------------------------
+
+config AIC_USING_I2C
+    bool "Using I2C"
+    default n
+    depends on I2C_DRIVER
+
+if AIC_USING_I2C
+source "../vendor/artinchip/chips/artinchips/drv/i2c/Kconfig"
+endif
+
+config AIC_USING_WDT
+    bool "Using WDT"
+    default n
+    select WATCHDOG
+
+config AIC_USING_RTC
+    bool "use USING_RTC"
+	default n
+    depends on RTC
+
+if AIC_USING_RTC
+source "../vendor/artinchip/chips/artinchips/drv/rtc/Kconfig"
+endif
+
+config AIC_USING_PWM
+    bool "use PWM"
+	default n
+    depends on PWM
+
+if AIC_USING_PWM
+#source "../vendor/artinchip/chips/artinchips/drv/pwm/Kconfig"
+endif
+
+config USING_SFUD
+    bool "use SFUD"
+	default n
+    depends on ALARM_ARCH
+
+if USING_SFUD
+source "../vendor/artinchip/chips/artinchips/drv/sfud/Kconfig"
+endif
+
+config USING_MTD
+    bool "use MTD"
+	default n
+
+config AIC_SPINOR_DRV
+    bool "SPINOR driver"
+    depends on USING_SFUD
+    depends on USING_MTD
+    depends on DRIVER_QSPI_HAL_EN
+    depends on SFUD_USING_SFDP
+	depends on SFUD_USING_QSPI
+    default n
+
+if AIC_SPINOR_DRV
+source "../vendor/artinchip/chips/artinchips/drv/spinor/Kconfig"
+endif
+
+config AIC_SDMC_DRV
+    bool "SDMC driver"
+    depends on DRIVER_SDMC_HAL_EN
+    select ARCH_HAVE_SDIO
+    default n
+
+if AIC_SDMC_DRV
+source "../vendor/artinchip/chips/artinchips/drv/sdmc/Kconfig"
+endif
+
+config AIC_USING_DMA
+    bool "DMA driver"
+    default n
+    depends on DMA
+
+config AIC_USING_AUDIO
+    bool "Audio driver"
+    default n
+
+if AIC_USING_AUDIO
+source "../vendor/artinchip/chips/artinchips/drv/audio/Kconfig"
+endif
+
+
+source "../vendor/artinchip/chips/artinchips/drv/gpio/Kconfig"
+
+source "../vendor/artinchip/chips/artinchips/drv/pinctrl/Kconfig"
+
+
+choice 
+    prompt "Select the console UART"
+    default AIC_USING_UART1_CONSOLE
+    depends on AIC_USING_UART0 || AIC_USING_UART1 || AIC_USING_UART2 || AIC_USING_UART3 || AIC_USING_UART4 || AIC_USING_UART5 || AIC_USING_UART6 || AIC_USING_UART7
+    
+    config AIC_USING_UART0_CONSOLE
+        bool "UART0 console"
+        
+    config AIC_USING_UART1_CONSOLE
+        bool "UART1 console"
+        
+    config AIC_USING_UART2_CONSOLE
+        bool "UART2 console"
+        
+    config AIC_USING_UART3_CONSOLE
+        bool "UART3 console"
+
+    config AIC_USING_UART4_CONSOLE
+        bool "UART4 console"
+    
+        
+    config AIC_USING_UART5_CONSOLE
+        bool "UART5 console"
+        
+    config AIC_USING_UART6_CONSOLE
+        bool "UART6 console"
+        
+    config AIC_USING_UART7_CONSOLE
+        bool "UART7 console"
+        
+endchoice
+
+if AIC_USING_UART0 || AIC_USING_UART1 || AIC_USING_UART2 || AIC_USING_UART3 || AIC_USING_UART4 || AIC_USING_UART5 || AIC_USING_UART6 || AIC_USING_UART7
+source "../contest2026_052_xinfanzhichuang/chips/artinchips/drv/uart/Kconfig"
+endif
+

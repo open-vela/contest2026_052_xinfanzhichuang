@@ -1,0 +1,58 @@
+#
+# Scripts Make.defs
+#
+
+include $(TOPDIR)/.config
+include $(TOPDIR)/tools/Config.mk
+
+# Configure Toolchain and Flags
+CROSSDEV = $(TOPDIR)/../contest2026_052_xinfanzhichuang/toolchain/bin/riscv64-unknown-elf-
+#$(info CROSSDEV = $(CROSSDEV))
+include $(TOPDIR)/arch/risc-v/src/common/Toolchain.defs
+include $(TOPDIR)/arch/risc-v/src/common/Make.defs
+
+# Specify the entry point assembly file (needs to be adapted from SDK startup_gcc.S)
+
+CC = $(CROSSDEV)gcc
+CPP = $(CC) -E -P -x c
+CXX = $(CROSSDEV)g++
+LD = $(CROSSDEV)ld
+AR = $(CROSSDEV)ar rcs
+NM = $(CROSSDEV)nm
+OBJCOPY = $(CROSSDEV)objcopy
+OBJDUMP = $(CROSSDEV)objdump
+
+
+CFLAGS := $(ARCHCFLAGS) $(ARCHOPTIMIZATION) $(ARCHCPUFLAGS) $(ARCHINCLUDES) $(ARCHDEFINES) $(EXTRAFLAGS) -pipe -Wno-error=implicit-function-declaration -Wno-error=int-conversion -Wno-error=incompatible-pointer-types -Wno-error=return-mismatch -Wno-error=declaration-missing-parameter-type -Wno-error=implicit-int
+CPICFLAGS = $(ARCHPICFLAGS) $(CFLAGS)
+CXXFLAGS := $(ARCHCXXFLAGS) $(ARCHOPTIMIZATION) $(ARCHCPUFLAGS) $(ARCHXXINCLUDES) $(ARCHDEFINES) $(EXTRAFLAGS) -pipe -Wno-error=implicit-function-declaration -Wno-error=int-conversion -Wno-error=incompatible-pointer-types -Wno-error=return-mismatch -Wno-error=declaration-missing-parameter-type -Wno-error=implicit-int
+# Use non-threadsafe local static initialization on this target to avoid libsupc++ guard gthread hooks.
+CXXFLAGS += -fno-threadsafe-statics
+# 添加C++标准库包含路径
+CXXFLAGS += -isystem $(TOPDIR)/../contest2026_052_xinfanzhichuang/toolchain/riscv64-unknown-elf/include/c++/10.2.0 \
+-isystem $(TOPDIR)/../contest2026_052_xinfanzhichuang/toolchain/riscv64-unknown-elf/include/c++/10.2.0/riscv64-unknown-elf
+CXXPICFLAGS = $(ARCHPICFLAGS) $(CXXFLAGS)
+
+CPPFLAGS := $(ARCHINCLUDES) $(ARCHDEFINES) $(EXTRAFLAGS)
+
+AFLAGS := $(CFLAGS) -D__ASSEMBLY__
+
+# Specify board level sources
+BOARD_CSRCS  = artinchip_boot.c
+
+# Linker script
+LDSCRIPT = ld.script
+ARCHSCRIPT = $(TOPDIR)/../contest2026_052_xinfanzhichuang/boards/d13x_rivoride_m4-nor/scripts/$(LDSCRIPT)
+
+# Toolchain Libs
+LIBGCC = "${shell "$(CC)" $(ARCHCPUFLAGS) -print-libgcc-file-name}"
+LIBSTDCPP = "${shell "$(CXX)" $(ARCHCPUFLAGS) -print-file-name=libstdc++.a}"
+EXTRA_LIBS += $(LIBGCC)
+EXTRA_LIBS += $(LIBSTDCPP) -lm -lc
+#---------------------------------------------------------------------------
+# Post-build Actions
+#---------------------------------------------------------------------------
+define POSTBUILD
+    cp nuttx nuttx.elf
+endef
+

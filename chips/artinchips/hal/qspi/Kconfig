@@ -1,0 +1,25 @@
+
+config AIC_SUPPORT_SPI_IN_BIT_MODE
+    bool "Enable SPI bit mode"
+    default n
+
+config AIC_SUPPORT_SPI_X_WIRE_IN_BIT_MODE
+    int "SPI bit mode is 3-WIRE or STD"
+    depends on AIC_SUPPORT_SPI_IN_BIT_MODE
+    default 3
+    range 3 4
+
+choice
+	prompt "QSPI version"
+	default AIC_QSPI_DRV_V11
+
+	config AIC_QSPI_DRV_V11
+	bool "Use qspi v1.1"
+
+	config AIC_QSPI_DRV_V12
+	bool "Use qspi v1.2"
+
+	config AIC_QSPI_DRV_V2X
+	bool "Use qspi v2.x"
+
+endchoice

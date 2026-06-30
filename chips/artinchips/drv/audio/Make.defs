@@ -1,0 +1,20 @@
+#
+# Copyright (c) 2023-2024, ArtInChip Technology Co., Ltd.
+#
+# SPDX-License-Identifier: Apache-2.0
+#
+
+DRV_SOURCE_PATH=drv
+DRV_AUDIO_PATH=drv/audio
+
+DEPPATH+=--dep-path $(DRV_AUDIO_PATH) 
+VPATH+=:chip/$(DRV_AUDIO_PATH)
+
+ARCH_AUDIO_SRC_PATH:=$(AIC_SRCDIR)/$(DRV_AUDIO_PATH)
+ARCH_AUDIO_PARENT_SRC_PATH:=$(AIC_SRCDIR)/$(DRV_SOURCE_PATH)
+
+CFLAGS += ${INCDIR_PREFIX}$(ARCH_AUDIO_SRC_PATH)
+
+# Include the  module.
+
+CHIP_CSRCS += $(DRV_AUDIO_PATH)/aic_drv_audio.c
