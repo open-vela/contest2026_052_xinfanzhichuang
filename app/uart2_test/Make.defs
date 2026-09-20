@@ -1,0 +1,3 @@
+ifneq ($(CONFIG_AIC_UART2_TEST),)
+CONFIGURED_APPS += $(APPDIR)/../contest2026_052_xinfanzhichuang/app/uart2_test
+endif

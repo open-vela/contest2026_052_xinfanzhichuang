@@ -1,0 +1,11 @@
+#
+# Wireless Peripheral Drivers
+#
+
+ifeq ($(CONFIG_ARCH_CHIP_CUSTOM),y)
+
+ifeq ($(CONFIG_AIC_WLAN_AIC8800D40L),y)
+include chip/peripheral/wireless/aic8800/Make.defs
+endif
+
+endif

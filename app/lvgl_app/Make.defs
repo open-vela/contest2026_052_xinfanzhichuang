@@ -1,0 +1,13 @@
+
+############################################################################
+# app/lvgl_app/Make.defs
+#
+# Register the LVGL application shell with the NuttX build system.
+############################################################################
+ifeq ($(CONFIG_LVGL_APP),y)
+LVGL_APP_DIR := $(APPDIR)/../contest2026_052_xinfanzhichuang/app/lvgl_app
+CONFIGURED_APPS += $(LVGL_APP_DIR)
+CLEANDIRS += $(LVGL_APP_DIR)
+endif
+
+include $(wildcard $(APPDIR)/../contest2026_052_xinfanzhichuang/app/lvgl_app/velaclaw/Make.defs)

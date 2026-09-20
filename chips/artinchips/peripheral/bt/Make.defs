@@ -1,0 +1,11 @@
+#
+# BT Peripheral Drivers
+#
+
+ifeq ($(CONFIG_ARCH_CHIP_CUSTOM),y)
+
+ifeq ($(CONFIG_AIC_BT_BT8858A),y)
+include chip/peripheral/bt/bt8858a/Make.defs
+endif
+
+endif

@@ -1,0 +1,7 @@
+config AIC_BT_EXT
+	bool "AIC external Bluetooth API"
+	default y if AIC_EXBT
+	depends on AIC_EXBT
+	help
+		Provide upper-application APIs for the external ESP32S
+		Bluetooth adapter over UART0.

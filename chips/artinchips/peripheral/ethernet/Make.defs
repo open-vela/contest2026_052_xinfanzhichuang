@@ -1,0 +1,18 @@
+#
+# ArtInChip GMAC Ethernet driver
+#
+
+ifeq ($(CONFIG_AIC_USING_GMAC0),y)
+
+VPATH += :chip/peripheral/ethernet
+DEPPATH += --dep-path chip/peripheral/ethernet
+
+CHIP_CSRCS += peripheral/ethernet/aic_mac.c
+CHIP_CSRCS += peripheral/ethernet/aic_mac_ll.c
+CHIP_CSRCS += peripheral/ethernet/aic_phy.c
+CHIP_CSRCS += peripheral/ethernet/aic_eth_netdev.c
+
+CFLAGS += ${INCDIR_PREFIX}$(AIC_VENDOR_DIR)/chips/artinchips/peripheral/ethernet
+CXXFLAGS += ${INCDIR_PREFIX}$(AIC_VENDOR_DIR)/chips/artinchips/peripheral/ethernet
+
+endif

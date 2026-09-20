@@ -1,0 +1,8 @@
+#-----------------------------
+# driver local parameter
+#-----------------------------
+
+config AIC_GPAI_IRQ_DRV_EN
+    bool "support gpai irq register"
+    default n
+

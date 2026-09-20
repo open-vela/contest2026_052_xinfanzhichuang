@@ -1,0 +1,24 @@
+#
+# Copyright (c) 2023-2024, ArtInChip Technology Co., Ltd.
+#
+# SPDX-License-Identifier: Apache-2.0
+#
+
+ifeq ($(CONFIG_ARCH_CHIP_CUSTOM),y)
+
+DRV_SOURCE_PATH=drv
+UART_PATH=drv/uart
+
+DEPPATH+=--dep-path $(UART_PATH) 
+VPATH+=:chip/$(UART_PATH)
+
+ARCH_UART_SRC_PATH:=$(AIC_SRCDIR)/$(UART_PATH)
+ARCH_UART_PARENT_SRC_PATH:=$(AIC_SRCDIR)/$(DRV_SOURCE_PATH)
+
+CFLAGS += ${INCDIR_PREFIX}$(ARCH_UART_SRC_PATH)
+
+# UART Driver
+CHIP_CSRCS += $(UART_PATH)/aic_uart.c
+
+
+endif

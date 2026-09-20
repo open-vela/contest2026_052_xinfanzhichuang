@@ -1,0 +1,5 @@
+menu "Connectivity"
+
+source "../contest2026_052_xinfanzhichuang/framework/connectivity/bt_ext/Kconfig"
+
+endmenu # Connectivity

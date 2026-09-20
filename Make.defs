@@ -1,0 +1,33 @@
+
+
+############################################################################
+# contest2026_052_xinfanzhichuang/Make.defs
+#
+# Top-level Make.defs for the contest project.
+# This file is included by the NuttX apps build system to register
+# contest applications.
+############################################################################
+
+# Match the board's custom directory rather than the include path.  When this
+# file is included through apps/contest2026_052_xinfanzhichuang/Make.defs, the
+# include-path parent is apps, not the contest project directory.
+CONTEST_PROJECT := contest2026_052_xinfanzhichuang
+
+# Only include if this vendor matches the board config
+ifneq ($(findstring $(CONTEST_PROJECT),$(CONFIG_ARCH_BOARD_CUSTOM_DIR)),)
+
+CONTEST_COMPAT_DIR := $(APPDIR)/../$(CONTEST_PROJECT)/boards/d13x_demo88-nor/include/compat
+
+# Zblue hands pre-allocated Zephyr stacks to NuttX pthreads.  Keep this
+# compatibility fix local to Zblue's thread shim so the rest of apps sees the
+# normal external/zblue headers and flags.
+ifndef D13X_ZBLUE_STACK_ALIGN_CFLAGS_ADDED
+D13X_ZBLUE_STACK_ALIGN_CFLAGS_ADDED := y
+zblue/port/kernel/thread.c_CFLAGS += -include $(CONTEST_COMPAT_DIR)/zblue_pthread_stack_align.h
+endif
+
+# Vendor frameworks and applications
+include $(APPDIR)/../$(CONTEST_PROJECT)/framework/Make.defs
+include $(APPDIR)/../$(CONTEST_PROJECT)/app/Make.defs
+
+endif # CONTEST_PROJECT check

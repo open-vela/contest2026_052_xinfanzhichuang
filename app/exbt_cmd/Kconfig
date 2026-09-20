@@ -1,0 +1,7 @@
+config AIC_EXBT_CMD
+    bool "ESP32S external Bluetooth command"
+    default y if AIC_BT_EXT
+    depends on AIC_BT_EXT
+    help
+        Provide the exbt command for validating the external ESP32S
+        Bluetooth adapter protocol over UART0.

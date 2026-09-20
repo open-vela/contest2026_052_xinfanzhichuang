@@ -1,0 +1,148 @@
+source "../contest2026_052_xinfanzhichuang/chips/artinchips/hal/cmu/Kconfig"
+
+config  DRIVER_QSPI_HAL_EN
+  bool "QSPI hal"
+	default n
+
+if DRIVER_QSPI_HAL_EN
+source "../contest2026_052_xinfanzhichuang/chips/artinchips/hal/qspi/Kconfig"
+endif
+
+config DRIVER_ADCIM_HAL_EN
+  bool "ADCIM hal"
+	default n
+
+if DRIVER_ADCIM_HAL_EN
+source "../contest2026_052_xinfanzhichuang/chips/artinchips/hal/adcim/Kconfig"
+endif
+
+config  DRIVER_GPAI_HAL_EN
+  bool "GPAI hal"
+	default n
+  depends on DRIVER_ADCIM_HAL_EN
+
+if DRIVER_GPAI_HAL_EN
+
+    config AIC_USING_GPAI0
+    bool "Using GPAI0"
+    default n
+
+    config AIC_USING_GPAI1
+    bool "Using GPAI1"
+    default n
+
+    config AIC_USING_GPAI2
+    bool "Using GPAI2"
+    default n
+
+    config AIC_USING_GPAI3
+    bool "Using GPAI3"
+    default n
+
+    config AIC_USING_GPAI4
+    bool "Using GPAI4"
+    default n
+
+    config AIC_USING_GPAI5
+    bool "Using GPAI5"
+    default n
+
+    config AIC_USING_GPAI6
+    bool "Using GPAI6"
+    default n
+
+    config AIC_USING_GPAI7
+    bool "Using GPAI7"
+    default n
+
+    config AIC_USING_GPAI8
+    bool "Using GPAI8"
+    default n
+
+    config AIC_USING_GPAI9
+    bool "Using GPAI9"
+    default n
+
+    config AIC_USING_GPAI10
+    bool "Using GPAI10"
+    default n
+
+    config AIC_USING_GPAI11
+    bool "Using GPAI11"
+    default n
+
+    config AIC_USING_GPAI12
+    bool "Using GPAI12"
+    default n
+
+    config AIC_USING_GPAI13
+    bool "Using GPAI13"
+    default n
+
+    config AIC_USING_GPAI14
+    bool "Using GPAI14"
+    default n
+
+    config AIC_USING_GPAI15
+    bool "Using GPAI15"
+    default n
+
+    config AIC_USING_GPAI16
+    bool "Using GPAI16"
+    default n
+
+    config AIC_USING_GPAI17
+    bool "Using GPAI17"
+    default n
+
+    config AIC_USING_GPAI18
+    bool "Using GPAI18"
+    default n
+
+    config AIC_USING_GPAI19
+    bool "Using GPAI19"
+    default n
+
+    config AIC_USING_GPAI20
+    bool "Using GPAI20"
+       default n
+    
+    config AIC_USING_GPAI21
+    bool "Using GPAI21"
+    default n
+    
+    config AIC_USING_GPAI22
+    bool "Using GPAI22"
+    default n
+    
+    config AIC_USING_GPAI23
+    bool "Using GPAI23"
+    default n
+    
+    config AIC_USING_GPAI24
+    bool "Using GPAI24"
+    default n
+    
+  config AIC_USING_GPAI23
+    bool "Using GPAI23"
+    default n
+  
+
+source "../contest2026_052_xinfanzhichuang/chips/artinchips/hal/gpai/Kconfig"
+endif
+
+config DRIVER_PSADC_HAL_EN
+  bool "PSADC hal"
+	default n
+
+if DRIVER_PSADC_HAL_EN
+source "../contest2026_052_xinfanzhichuang/chips/artinchips/hal/psadc/Kconfig"
+endif
+
+config  DRIVER_SDMC_HAL_EN
+  bool "SDMC hal"
+	default n
+
+if DRIVER_SDMC_HAL_EN
+source "../contest2026_052_xinfanzhichuang/chips/artinchips/hal/sdmc/Kconfig"
+endif

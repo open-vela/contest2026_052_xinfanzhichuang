@@ -1,0 +1,20 @@
+#
+# Copyright (c) 2023-2024, ArtInChip Technology Co., Ltd.
+#
+# SPDX-License-Identifier: Apache-2.0
+#
+
+ifeq ($(CONFIG_ARCH_CHIP_CUSTOM),y)
+
+# ----------------------------------------------------------------------------
+# Include Paths
+# ----------------------------------------------------------------------------
+
+INCLUDES += -I$(AIC_SRCDIR)/include
+INCLUDES += -I$(AIC_SRCDIR)/include/hal
+INCLUDES += -I$(AIC_SRCDIR)/include/drv
+INCLUDES += -I$(AIC_SRCDIR)/include/uapi
+INCLUDES += -I$(AIC_SRCDIR)/common/include
+INCLUDES += -I$(AIC_SRCDIR)/common/include/rtthread/include
+INCLUDES += -I$(AIC_SRCDIR)/include/peripheral
+endif

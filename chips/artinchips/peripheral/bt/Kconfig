@@ -1,0 +1,102 @@
+#
+# Bluetooth Driver Configuration
+#
+
+menu "Bluetooth Support"
+
+config AIC_BT_BT8858A
+    bool "BT8858A Bluetooth driver"
+    default n
+    select SERIAL
+    help
+        Enable BT8858A/AIC8800 Bluetooth driver.
+        This driver communicates with the BT module via UART2.
+        RTS/CTS is optional and controlled by AIC_BT_UART_HW_FLOWCTRL.
+
+if AIC_BT_BT8858A
+
+config AIC_BT_BT8858A_VELA_HCI
+    bool "Expose AIC8800 controller as Vela HCI H4 device"
+    default y
+    depends on AIC_WLAN_AIC8800D40L && AIC8800_BT_SUPPORT
+    select DRIVERS_WIRELESS
+    select DRIVERS_BLUETOOTH
+    select UART_BTH4
+    help
+        Register the AIC8800D40L Bluetooth controller as /dev/ttyHCI0
+        through the NuttX BTH4 pseudo device. This path lets openVela/Zblue
+        own the Bluetooth host stack.
+
+config BLUETOOTH_CONNECTION_MANAGER
+    bool
+    default y if AIC_BT_BT8858A_VELA_HCI && BLUETOOTH_GATT_SERVER && BLUETOOTH_STACK_LE_ZBLUE
+
+config AIC_BT_BT8858A_VELA_HCI_DUMP
+    bool "Dump AIC8800 HCI H4 packets"
+    default n
+    depends on AIC_BT_BT8858A_VELA_HCI
+    help
+        Print a short hexadecimal dump of HCI TX/RX packets. Enable this
+        only while debugging controller bring-up.
+
+config AIC_BT_BT8858A_VELA_HCI_POWER_CYCLE
+    bool "Power-cycle BT_ON when starting AIC8800 HCI"
+    default n
+    depends on AIC_BT_BT8858A_VELA_HCI
+    help
+        Force BT_ON low/high during HCI start. Leave this disabled for the
+        AIC8800 combo path because the WiFi SDIO driver downloads the BT
+        patch and configures the BT UART before the HCI UART is usable.
+        Power-cycling BT_ON after that can clear the loaded BT patch.
+
+config AIC_BT_BTMODE
+    int "AIC8800 BT patch mode"
+    default 2
+    range 0 5
+    depends on AIC_WLAN_AIC8800D40L && AIC8800_BT_SUPPORT
+    help
+        Select the btmode value written into the AIC8800 BT patch table.
+
+        0: BT only with switch
+        1: WiFi/BT combo
+        2: BT only without switch
+        3: BT only test
+        4: WiFi/BT combo test
+        5: BT only COANT mode
+
+        The RT-Thread reference overwrites AIC8800D80 to 2 in code, while
+        the D80 U02 patch table default is 5. Keep this configurable while
+        validating the BLE HCI firmware mode.
+
+config AIC_BT_UART_PORT
+    string "BT UART port device"
+    default "/dev/ttyS2"
+    help
+        UART device path for BT communication.
+        Default is UART2 (/dev/ttyS2).
+
+config AIC_BT_UART_BAUD
+    int "BT UART baud rate"
+    default 1500000
+    help
+        Baud rate for BT UART communication.
+
+config AIC_BT_UART_HW_FLOWCTRL
+    bool "Enable BT UART RTS/CTS flow control"
+    default n
+    help
+        Enable hardware flow control on the BT UART. Keep this disabled until
+        the board RTS/CTS wiring and UART mode are verified. The AIC8800 BT
+        patch table uses the same setting so the controller and host UART stay
+        in sync.
+
+config AIC_BT_UART_DUMP
+    bool "Dump BT UART traffic"
+    default n
+    help
+        Print BT UART TX/RX bytes for board bring-up. Enable this only while
+        debugging the AT command channel.
+
+endif # AIC_BT_BT8858A
+
+endmenu

@@ -1,0 +1,61 @@
+#
+# ArtInChip GMAC Ethernet configuration
+#
+
+menu "Ethernet Support"
+
+config AIC_USING_GMAC0
+	bool "Enable GMAC0 Ethernet"
+	default n
+	depends on NET
+	select NETDEVICES
+	select NET_ETHERNET
+
+if AIC_USING_GMAC0
+
+config AIC_DEV_GMAC0_PHYRST_GPIO
+	string "GMAC0 PHY reset GPIO"
+	default "PE.6"
+
+config AIC_DEV_GMAC0_RMII
+	bool
+	default y
+
+config AIC_DEV_GMAC0_PHY_EXTCLK
+	bool "PHY provides RMII 50MHz reference clock"
+	default y
+	help
+		The D133CBS-QFN88-V1-2 board routes the PHY 50MHz RMII reference
+		clock to PE3/EMAC_REFCLK.
+
+config AIC_DEV_GMAC0_CLKOUT2_25M
+	bool "Enable CLK_OUT2 25MHz for PHY crystal input"
+	default y
+	help
+		The board routes PE10/CLK_OUT2 to the RTL8201F 25MHz clock input.
+
+config AIC_DEV_GMAC0_PHYADDR
+	int "GMAC0 PHY MDIO address"
+	default 0
+	range 0 31
+
+config AIC_DEV_GMAC0_MACADDR
+	string "GMAC0 MAC address"
+	default "02:22:44:88:77:66"
+
+config AIC_DEV_GMAC0_PHY_POLL_MS
+	int "GMAC0 PHY poll interval in ms"
+	default 1000
+	range 200 10000
+
+config AIC_DEV_GMAC0_TXDELAY
+	int
+	default 0
+
+config AIC_DEV_GMAC0_RXDELAY
+	int
+	default 0
+
+endif
+
+endmenu

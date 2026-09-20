@@ -1,0 +1,35 @@
+#
+# Copyright (c) 2026 Rivotek
+#
+# SPDX-License-Identifier: Apache-2.0
+#
+
+config AIC_LCD_BRIGHTNESS
+	bool "LCD brightness NSH command"
+	default y if AIC_USING_PWM2
+	depends on PWM
+	help
+		Enable the lcd_brightness NSH command for the D133CBS LVDS panel.
+		The command accepts a 0..100 percent hardware duty cycle.
+
+if AIC_LCD_BRIGHTNESS
+
+config AIC_LCD_BRIGHTNESS_PWM_PATH
+	string "LCD brightness PWM device path"
+	default "/dev/pwm2"
+
+config AIC_LCD_BRIGHTNESS_PWM_FREQUENCY
+	int "LCD brightness PWM frequency"
+	default 1000
+	range 1 1000000
+	help
+		Use 1000 Hz for the D133CBS LCD_PWM signal. R20/R21/C42 form an
+		RC network before the RY3730 EN/PWM input.
+
+config AIC_LCD_BRIGHTNESS_PWM_CHANNEL
+	int "LCD brightness PWM channel"
+	default 1
+	depends on PWM_MULTICHAN
+	range 1 16
+
+endif

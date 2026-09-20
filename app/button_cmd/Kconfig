@@ -1,0 +1,7 @@
+config AIC_BUTTON_CMD
+	bool "AIC button command"
+	default y if AIC_INPUT_BUTTON
+	depends on AIC_INPUT_BUTTON
+	help
+		Provide the button command for validating the D133CBS KEYADC
+		direction keys and WAKEUP GPIO from NSH or ADB shell.

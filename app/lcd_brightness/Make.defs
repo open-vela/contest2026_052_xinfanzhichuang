@@ -1,0 +1,3 @@
+ifeq ($(CONFIG_AIC_LCD_BRIGHTNESS),y)
+CONFIGURED_APPS += $(APPDIR)/../contest2026_052_xinfanzhichuang/app/lcd_brightness
+endif

@@ -1,0 +1,19 @@
+#
+# For a description of the syntax of this configuration file,
+# see the file kconfig-language.txt in the NuttX tools repository.
+#
+
+if ARCH_CHIP_CUSTOM
+
+menu "Pinctrl Configuration"
+	depends on PINCTRL
+
+config AIC_PINCTRL_DEBUG
+	bool "Enable Pinctrl Debug Output"
+	default n
+	---help---
+		Enable debug output for ArtInChip Pinctrl Driver.
+
+endmenu # Pinctrl Configuration
+
+endif

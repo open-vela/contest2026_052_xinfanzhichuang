@@ -1,0 +1,116 @@
+config AIC_INPUT_BUTTON
+	bool "AIC board button API"
+	default n
+	depends on ARCH_CHIP_D13X
+	depends on !AIC_USING_GPAI2
+	depends on !AIC_I2C1
+	depends on !AIC_BT_UART_HW_FLOWCTRL
+	select DRIVER_PSADC_HAL_EN
+	select AIC_USING_PSADC
+	select AIC_USING_PSADC2
+	help
+		Provide the board button API. D133CBS direction keys are read
+		from the KEYADC resistor ladder on PSADC2 in single-sample mode,
+		and WAKEUP is read from the low-active KEY_WAKEUP GPIO.
+
+if AIC_INPUT_BUTTON
+
+config AIC_INPUT_BUTTON_PSADC_CH
+	int "Direction key PSADC channel"
+	default 2
+	range 0 15
+
+config AIC_INPUT_BUTTON_WAKEUP_PIN
+	string "WAKEUP key GPIO"
+	default "PD.15"
+
+config AIC_INPUT_BUTTON_WAKEUP_SOURCE
+	bool "Keep WAKEUP key as a wake source"
+	default y
+	help
+		Mark the WAKEUP GPIO as a wake source in board pinmux data.
+		This preserves the pin across board pinmux deinit and prepares
+		the pin for later PM wake policy integration. It does not enter
+		sleep by itself.
+
+config AIC_INPUT_BUTTON_POLL_INTERVAL_MS
+	int "Button poll interval in milliseconds"
+	default 50
+	range 10 1000
+
+config AIC_INPUT_BUTTON_PSADC_READ_TIMEOUT_MS
+	int "Button PSADC read timeout in milliseconds"
+	default 200
+	range 1 1000
+
+config AIC_INPUT_BUTTON_DEBOUNCE_SAMPLES
+	int "Stable samples required for debounce"
+	default 2
+	range 1 8
+
+config AIC_INPUT_BUTTON_ADC_MIN
+	int "Minimum valid KEYADC raw value (12-bit)"
+	default 80
+	range 0 4095
+
+config AIC_INPUT_BUTTON_ADC_MAX
+	int "Maximum valid KEYADC raw value (12-bit)"
+	default 2300
+	range 0 4095
+
+config AIC_INPUT_BUTTON_ADC_KEY_WINDOW
+	int "KEYADC match window around each key center"
+	default 180
+	range 1 2048
+
+config AIC_INPUT_BUTTON_ADC_UP_CENTER
+	int "UP key raw center value"
+	default 960
+	range 0 4095
+
+config AIC_INPUT_BUTTON_ADC_DOWN_CENTER
+	int "DOWN key raw center value"
+	default 560
+	range 0 4095
+
+config AIC_INPUT_BUTTON_ADC_LEFT_CENTER
+	int "LEFT key raw center value"
+	default 1890
+	range 0 4095
+
+config AIC_INPUT_BUTTON_ADC_RIGHT_CENTER
+	int "RIGHT key raw center value"
+	default 1550
+	range 0 4095
+
+config AIC_INPUT_BUTTON_THREAD_PRIORITY
+	int "Button callback thread priority"
+	default 100
+
+config AIC_INPUT_BUTTON_THREAD_STACKSIZE
+	int "Button callback thread stack size"
+	default 4096
+
+config AIC_INPUT_BUTTON_AUTOSTART
+	bool "Start button service automatically"
+	default y
+	help
+		Start the button sampling service during system startup.
+		The service keeps running and publishes button events to all
+		registered subscribers.
+
+config AIC_INPUT_BUTTON_EVENT_LOG
+	bool "Print button events from the service"
+	default y
+	help
+		Print each debounced pressed/released event from the button worker.
+		This keeps board bring-up observable immediately after boot without
+		running the temporary button listen command.
+
+config AIC_INPUT_BUTTON_AUTOSTART_DELAY_MS
+	int "Button service auto-start delay in milliseconds"
+	default 2000
+	range 0 10000
+	depends on AIC_INPUT_BUTTON_AUTOSTART
+
+endif

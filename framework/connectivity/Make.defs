@@ -1,0 +1,5 @@
+############################################################################
+# contest2026_052_xinfanzhichuang/framework/connectivity/Make.defs
+############################################################################
+
+include $(wildcard $(CONTEST_FRAMEWORK_DIR)/connectivity/bt_ext/Make.defs)

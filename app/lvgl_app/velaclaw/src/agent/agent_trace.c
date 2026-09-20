@@ -1,0 +1,117 @@
+/*
+ * Copyright (C) 2026 Xiaomi Corporation
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+#include "agent/agent_trace.h"
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <syslog.h>
+#include <time.h>
+
+static const char* TAG = "trace";
+
+static uint64_t trace_monotonic_ms(void)
+{
+    struct timespec ts;
+
+    if (clock_gettime(CLOCK_MONOTONIC, &ts) != 0) {
+        return 0;
+    }
+
+    return (uint64_t)ts.tv_sec * 1000ULL + (uint64_t)ts.tv_nsec / 1000000ULL;
+}
+
+static const char* status_str(int status)
+{
+    switch (status) {
+    case AGENT_TRACE_RUNNING:
+        return "running";
+    case AGENT_TRACE_OK:
+        return "ok";
+    case AGENT_TRACE_FAIL:
+        return "fail";
+    case AGENT_TRACE_TIMEOUT:
+        return "timeout";
+    default:
+        return "unknown";
+    }
+}
+
+void agent_trace_begin(agent_trace_t* t, const char* chat_id,
+    const char* channel)
+{
+    memset(t, 0, sizeof(*t));
+    uint64_t mono_ms = trace_monotonic_ms();
+    t->start_mono_ms = mono_ms;
+
+    /* Generate run_id from monotonic time + rand so RTC jumps do not affect it. */
+    snprintf(t->run_id, sizeof(t->run_id), "%08x%08x",
+        (unsigned)(mono_ms & 0xFFFFFFFF),
+        (unsigned)(rand() & 0xFFFFFFFF));
+
+    if (chat_id) {
+        strncpy(t->chat_id, chat_id, sizeof(t->chat_id) - 1);
+    }
+    if (channel) {
+        strncpy(t->channel, channel, sizeof(t->channel) - 1);
+    }
+
+    t->status = AGENT_TRACE_RUNNING;
+    t->backend_idx = -1;
+
+    syslog(LOG_INFO,
+        "[%s:%s] BEGIN chat=%s chan=%s",
+        TAG, t->run_id, t->chat_id, t->channel);
+}
+
+void agent_trace_step(agent_trace_t* t, int iteration,
+    const char* tool_name, uint32_t latency_ms,
+    int llm_ok)
+{
+    t->iteration = iteration;
+    t->total_latency_ms += latency_ms;
+    if (tool_name && tool_name[0]) {
+        t->total_tool_calls++;
+    }
+
+    syslog(LOG_INFO,
+        "[%s:%s] iter=%d tool=%s latency=%ums llm=%s backend=%d",
+        TAG, t->run_id, iteration,
+        (tool_name && tool_name[0]) ? tool_name : "(none)",
+        (unsigned)latency_ms,
+        llm_ok ? "ok" : "fail",
+        t->backend_idx);
+}
+
+void agent_trace_end(agent_trace_t* t, int status)
+{
+    t->status = status;
+
+    uint64_t now_ms = trace_monotonic_ms();
+    uint32_t elapsed = 0;
+    if (now_ms >= t->start_mono_ms) {
+        elapsed = (uint32_t)((now_ms - t->start_mono_ms) / 1000ULL);
+    }
+
+    syslog(LOG_INFO,
+        "[%s:%s] END status=%s iters=%d tools=%d "
+        "llm_ms=%u elapsed=%us backend=%d",
+        TAG, t->run_id, status_str(status),
+        t->iteration + 1, t->total_tool_calls,
+        (unsigned)t->total_latency_ms, (unsigned)elapsed,
+        t->backend_idx);
+}

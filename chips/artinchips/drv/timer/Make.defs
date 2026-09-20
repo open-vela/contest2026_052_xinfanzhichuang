@@ -1,0 +1,19 @@
+#
+# Copyright (c) 2023-2024, ArtInChip Technology Co., Ltd.
+#
+# SPDX-License-Identifier: Apache-2.0
+#
+
+DRV_SOURCE_PATH=drv
+DRV_TIMER_PATH=drv/timer
+
+DEPPATH+=--dep-path $(DRV_TIMER_PATH) 
+VPATH+=:chip/$(DRV_TIMER_PATH)
+
+ARCH_TIMER_SRC_PATH:=$(AIC_SRCDIR)/$(DRV_TIMER_PATH)
+ARCH_TIMER_PARENT_SRC_PATH:=$(AIC_SRCDIR)/$(DRV_SOURCE_PATH)
+
+CFLAGS += ${INCDIR_PREFIX}$(ARCH_TIMER_SRC_PATH)
+
+# Include the  module.
+CHIP_CSRCS += $(DRV_TIMER_PATH)/aic_timer.c

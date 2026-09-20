@@ -1,0 +1,109 @@
+menu "Application entry and main task"
+	depends on LVGL_APP
+
+config LVGL_APP_APP_MAIN_PRIORITY
+	int "Main LVGL task priority"
+	default 100
+	help
+		POSIX task priority used by the NuttX application entry point.
+		The recommended default is 100 for an interactive GUI task.
+
+config LVGL_APP_APP_MAIN_STACKSIZE
+	int "Main LVGL task stack size"
+	default 32768
+	help
+		Stack size in bytes for the LVGL UI task. The recommended
+		default is 32768 bytes, which leaves room for LVGL object creation.
+
+config LVGL_APP_APP_MAIN_LOOP_MIN_SLEEP_MS
+	int "Minimum UI loop sleep in milliseconds"
+	default 1
+	help
+		Lower bound for the sleep time after lv_timer_handler(). The
+		recommended default is 1 ms to keep input latency low.
+
+config LVGL_APP_APP_MAIN_LOOP_MAX_SLEEP_MS
+	int "Maximum UI loop sleep in milliseconds"
+	default 30
+	help
+		Upper bound for the sleep time after lv_timer_handler(). The
+		recommended default is 30 ms to avoid long input stalls.
+
+config LVGL_APP_APP_MAIN_AUTOSTART
+	bool "Auto start lvgl_app after boot"
+	default n
+	help
+		Automatically spawn lvgl_app during system startup using a
+		constructor. The recommended default is n for predictable bring-up.
+
+config LVGL_APP_APP_MAIN_AUTOSTART_DELAY_MS
+	int "Auto start delay in milliseconds"
+	default 1500
+	depends on LVGL_APP_APP_MAIN_AUTOSTART
+	help
+		Delay before the auto-start helper spawns lvgl_app. The
+		recommended default is 1500 ms to let device nodes appear.
+
+config LVGL_APP_APP_MAIN_BOARD_INIT
+	bool "Call BOARDIOC_INIT when needed"
+	default y
+	depends on BOARDCTL
+	help
+		Call boardctl(BOARDIOC_INIT) when the app is launched outside
+		NSH architecture initialization. The recommended default is y.
+
+config LVGL_APP_HAL_DISPLAY_FB_PATH
+	string "LVGL framebuffer device path"
+	default "/dev/fb0"
+	help
+		Framebuffer device used by the minimal LVGL/NuttX application
+		shell. The legacy symbol name is kept so existing configs remain
+		compatible after the old HAL directory is removed.
+
+config LVGL_APP_HAL_DISPLAY_DEVICE_WAIT_MS
+	int "Display device wait timeout in milliseconds"
+	default 3000
+	help
+		Time to wait for the framebuffer device before calling the LVGL
+		NuttX display initialization.
+
+config LVGL_APP_HAL_INPUT_DEV_PATH
+	string "LVGL input device path"
+	default "/dev/input0"
+	help
+		Touch input device passed to the LVGL NuttX touchscreen driver
+		when CONFIG_LV_USE_NUTTX_TOUCHSCREEN is enabled.
+
+config LVGL_APP_BACKLIGHT_PWM_PATH
+	string "Backlight PWM device path"
+	default "/dev/pwm2"
+	depends on PWM
+	help
+		PWM character device used for LCD backlight. The d13x_demo88-nor
+		LVDS panel config uses /dev/pwm2. Leave this empty to disable
+		app-side PWM backlight control.
+
+config LVGL_APP_BACKLIGHT_PWM_FREQUENCY
+	int "Backlight PWM frequency"
+	default 1000
+	depends on PWM
+	help
+		PWM frequency in Hz for the backlight output. The D133CBS board
+		uses an RC network on LCD_PWM, so 1000 Hz is the validated default.
+
+config LVGL_APP_BACKLIGHT_PWM_CHANNEL
+	int "Backlight PWM channel"
+	default 1
+	depends on PWM_MULTICHAN
+	help
+		NuttX PWM channel number used when CONFIG_PWM_MULTICHAN is enabled.
+
+config LVGL_APP_BACKLIGHT_DEFAULT_PERCENT
+	int "Default backlight percent"
+	default 72
+	depends on PWM
+	range 1 100
+	help
+		Default brightness applied when lvgl_app starts.
+
+endmenu

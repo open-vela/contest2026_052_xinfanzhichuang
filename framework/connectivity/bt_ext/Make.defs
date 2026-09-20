@@ -1,0 +1,14 @@
+############################################################################
+# contest2026_052_xinfanzhichuang/framework/connectivity/bt_ext/Make.defs
+############################################################################
+
+ifneq ($(CONFIG_AIC_BT_EXT),)
+
+BT_EXT_DIR := $(CONTEST_FRAMEWORK_DIR)/connectivity/bt_ext
+
+CONFIGURED_APPS += $(BT_EXT_DIR)
+
+CFLAGS += ${INCDIR_PREFIX}$(CONTEST_FRAMEWORK_DIR)/include
+CXXFLAGS += ${INCDIR_PREFIX}$(CONTEST_FRAMEWORK_DIR)/include
+
+endif

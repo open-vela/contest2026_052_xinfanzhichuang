@@ -1,0 +1,18 @@
+config AIC_DMIC_CMD
+	bool "AIC DMIC capture command"
+	default y if AIC_AUDIO_DMIC
+	depends on AIC_USING_AUDIO
+	depends on AIC_AUDIO_DMIC
+	depends on AIC_USING_DMA
+	help
+		Provide the dmic NSH command for validating the D133CBS
+		stereo digital microphones on PD16/PD17.
+
+config AIC_DMIC_CMD_DMA_CHANNEL
+	int "AIC DMIC command DMA channel"
+	default 1
+	range 0 3
+	depends on AIC_DMIC_CMD
+	help
+		Hardware DMA channel used by the dmic command. Keep this away
+		from other active low-level DMA clients when debugging.

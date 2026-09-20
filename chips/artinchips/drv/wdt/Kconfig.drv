@@ -1,0 +1,5 @@
+config AIC_USING_WDT
+    bool "Using WDT"
+    default n
+    select WATCHDOG
+    select ARCH_HAVE_RESET

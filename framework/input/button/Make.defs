@@ -1,0 +1,25 @@
+############################################################################
+# contest2026_052_xinfanzhichuang/framework/input/button/Make.defs
+############################################################################
+
+ifneq ($(CONFIG_AIC_INPUT_BUTTON),)
+
+AIC_BUTTON_DIR := $(CONTEST_FRAMEWORK_DIR)/input/button
+AIC_BUTTON_CHIP_DIR := $(APPDIR)/../$(CONTEST_PROJECT)/chips/artinchips
+
+CONFIGURED_APPS += $(AIC_BUTTON_DIR)
+
+CFLAGS += ${INCDIR_PREFIX}$(CONTEST_FRAMEWORK_DIR)/include
+CFLAGS += ${INCDIR_PREFIX}$(AIC_BUTTON_CHIP_DIR)
+CFLAGS += ${INCDIR_PREFIX}$(AIC_BUTTON_CHIP_DIR)/include
+CFLAGS += ${INCDIR_PREFIX}$(AIC_BUTTON_CHIP_DIR)/include/hal
+CFLAGS += ${INCDIR_PREFIX}$(AIC_BUTTON_CHIP_DIR)/common/include
+CFLAGS += ${INCDIR_PREFIX}$(AIC_BUTTON_CHIP_DIR)/d13x
+CXXFLAGS += ${INCDIR_PREFIX}$(CONTEST_FRAMEWORK_DIR)/include
+CXXFLAGS += ${INCDIR_PREFIX}$(AIC_BUTTON_CHIP_DIR)
+CXXFLAGS += ${INCDIR_PREFIX}$(AIC_BUTTON_CHIP_DIR)/include
+CXXFLAGS += ${INCDIR_PREFIX}$(AIC_BUTTON_CHIP_DIR)/include/hal
+CXXFLAGS += ${INCDIR_PREFIX}$(AIC_BUTTON_CHIP_DIR)/common/include
+CXXFLAGS += ${INCDIR_PREFIX}$(AIC_BUTTON_CHIP_DIR)/d13x
+
+endif

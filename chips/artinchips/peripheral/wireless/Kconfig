@@ -1,0 +1,25 @@
+#
+# Wireless Driver Configuration
+#
+
+menu "Wireless Support"
+
+config AIC_WIRELESS_LAN
+    bool "Enable wireless LAN support"
+    default n
+
+menuconfig AIC_WLAN_AIC8800D40L
+    bool "AIC8800 WiFi driver"
+    default n
+    depends on AIC_WIRELESS_LAN
+    help
+        Enable AIC8800D40L WiFi/BT combo module driver.
+        Uses SDIO interface for WiFi, UART for BT.
+
+if AIC_WLAN_AIC8800D40L
+
+source "../contest2026_052_xinfanzhichuang/chips/artinchips/peripheral/wireless/aic8800/Kconfig.dev"
+
+endif # AIC_WLAN_AIC8800D40L
+
+endmenu

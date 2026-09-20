@@ -1,0 +1,140 @@
+#
+# Copyright (C) 2026 Xiaomi Corporation
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+
+#
+# For a description of the syntax of this configuration file,
+# see the file kconfig-language.txt in the NuttX tools repository.
+#
+
+config EXAMPLES_VELACLAW_VELA
+	tristate "VelaClaw Vela AI Agent"
+	default n
+	select CRYPTO_MBEDTLS
+	select NETUTILS_CJSON
+	select NETUTILS_MQTTC
+	select SYSTEM_SYSTEM
+	---help---
+		Enable the VelaClaw AI Agent ported to Vela/NuttX.
+		Requires network connectivity and mbedTLS.
+
+if EXAMPLES_VELACLAW_VELA
+
+config EXAMPLES_VELACLAW_VELA_PROGNAME
+	string "Program name"
+	default "velaclaw"
+	---help---
+		Name of the NSH built-in command.
+
+config EXAMPLES_VELACLAW_VELA_PRIORITY
+	int "Agent task priority"
+	default 100
+
+config EXAMPLES_VELACLAW_VELA_STACKSIZE
+	int "Agent main stack size"
+	default 32768
+
+config EXAMPLES_VELACLAW_VELA_DATA_DIR
+	string "Persistent data directory"
+	default "/data/velaclaw"
+	---help---
+		Base directory for config, memory and session files.
+		Must be on a writable filesystem (e.g. littlefs, romfs+ramdisk).
+
+config EXAMPLES_VELACLAW_VOICE_BACKEND_MIMO
+	bool "Enable MiMo ASR/TTS voice backend"
+	default y
+	---help---
+		Use Xiaomi MiMo OpenAI-compatible audio models for ASR and TTS.
+
+config EXAMPLES_VELACLAW_VOICE_BACKEND_VOLC
+	bool "Enable Volcengine ASR/TTS voice backend"
+	default y
+	---help---
+		Keep the original Volcengine voice backend as an optional fallback.
+
+config EXAMPLES_VELACLAW_VOICE_ASR_DEFAULT_BACKEND
+	string "Default ASR backend"
+	default "mimo"
+	---help---
+		Name of the ASR backend selected at startup.
+
+config EXAMPLES_VELACLAW_VOICE_TTS_DEFAULT_BACKEND
+	string "Default TTS backend"
+	default "mimo"
+	---help---
+		Name of the TTS backend selected at startup.
+
+config EXAMPLES_VELACLAW_VELA_NODE_ID
+	string "Node client ID"
+	default "watch-01"
+	---help---
+		Unique identifier for this device when connecting to an
+		OpenClaw Gateway as a Node. Used in tool names like
+		node:<id>:<command>.
+
+config EXAMPLES_VELACLAW_VELA_NODE_DISPLAY_NAME
+	string "Node client display name"
+	default "Smart Watch"
+	---help---
+		Human-readable name shown on the Hub side for this Node.
+
+choice
+	prompt "Shell security policy"
+	default EXAMPLES_VELACLAW_VELA_SHELL_ALLOWLIST
+	---help---
+		Security policy for run_shell tool execution.
+		- Allowlist: Only pre-approved commands (safest for production)
+		- Full: Allow most commands except critical ones (for development/skills)
+		- Deny: Disable run_shell completely
+
+config EXAMPLES_VELACLAW_VELA_SHELL_ALLOWLIST
+	bool "Allowlist mode (production)"
+	---help---
+		Only allow pre-approved safe commands. Blocks shell meta-characters
+		(pipes, redirects, etc.) and dangerous commands (rm, reboot, etc.).
+		Recommended for production deployments.
+
+config EXAMPLES_VELACLAW_VELA_SHELL_FULL
+	bool "Full mode (development)"
+	---help---
+		Allow most shell commands and features (pipes, redirects, etc.).
+		Only blocks critical system commands (reboot, mkfs, insmod, etc.).
+		Recommended for development and skill authoring.
+
+config EXAMPLES_VELACLAW_VELA_SHELL_DENY
+	bool "Deny mode (disabled)"
+	---help---
+		Completely disable run_shell tool. Use when shell access is not needed.
+
+endchoice
+
+config VELACLAW_TEST
+	bool "Enable integration test commands"
+	default n
+	---help---
+		Compile the claw_test CLI command and vision integration test
+		harness. Adds ~2KB code. Use 'claw_test' in NSH to run tests.
+
+config VELACLAW_TEST_IMAGE_DIR
+	string "Test image directory"
+	default "/data/velaclaw/test"
+	depends on VELACLAW_TEST
+	---help---
+		Directory for test images used by the vision integration tests.
+		Images can be pre-pushed via adb or generated at runtime.
+		Must be on a writable filesystem.
+
+endif

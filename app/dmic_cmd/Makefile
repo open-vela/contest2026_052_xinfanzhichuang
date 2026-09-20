@@ -1,0 +1,21 @@
+include $(APPDIR)/Make.defs
+
+PROGNAME  = dmic
+PRIORITY  = 100
+STACKSIZE = 8192
+MODULE    = $(CONFIG_AIC_DMIC_CMD)
+MAINSRC   = dmic.c
+
+AIC_PROJECT_DIR = $(APPDIR)/../contest2026_052_xinfanzhichuang
+AIC_CHIP_DIR    = $(AIC_PROJECT_DIR)/chips/artinchips
+
+CFLAGS += ${INCDIR_PREFIX}$(AIC_CHIP_DIR)/include
+CFLAGS += ${INCDIR_PREFIX}$(AIC_CHIP_DIR)
+CFLAGS += ${INCDIR_PREFIX}$(AIC_CHIP_DIR)/include/hal
+CFLAGS += ${INCDIR_PREFIX}$(AIC_CHIP_DIR)/include/drv
+CFLAGS += ${INCDIR_PREFIX}$(AIC_CHIP_DIR)/common/include
+CFLAGS += ${INCDIR_PREFIX}$(AIC_CHIP_DIR)/hal/audio
+CFLAGS += ${INCDIR_PREFIX}$(AIC_CHIP_DIR)/hal/dma
+CFLAGS += ${INCDIR_PREFIX}$(AIC_CHIP_DIR)/drv/dma
+
+include $(APPDIR)/Application.mk

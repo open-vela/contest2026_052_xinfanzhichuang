@@ -1,0 +1,5 @@
+menu "Input"
+
+source "../contest2026_052_xinfanzhichuang/framework/input/button/Kconfig"
+
+endmenu # Input
