@@ -1,0 +1,142 @@
+
+
+config D13X_DEMO88_NSH
+	bool "Enable the NSH fucntion on the 'D13X_DEMO88' board"
+
+config D13X_DEMO88_OTA
+	bool "Enable the OTA fucntion on the 'D13X_DEMO88' board"
+
+config ARCH_BOARD_D13X_DEMO88
+    select ARCH_FPU
+    select ARCH_HAVE_RESET
+    bool "Enable the 'D13X_DEMO88' board"
+
+config AIC_CLK_PLL_INT0_FREQ
+    int
+    default 480000000
+    help
+      The frequency of the PLL INT0 output in Hz.
+
+config AIC_CLK_PLL_INT1_FREQ
+    int
+    default 1200000000
+    help
+      The frequency of the PLL INT1 output in Hz.
+
+config AIC_CLK_PLL_FRA0_FREQ
+    int
+    default 792000000
+    help
+      The frequency of the PLL FRA0 output in Hz.
+
+config AIC_CLK_PLL_FRA2_FREQ
+    int
+    default 1188000000
+    help
+      The frequency of the PLL FRA2 output in Hz.
+
+config AIC_CLK_CPU_FREQ
+    int
+    default 480000000
+    help
+      The frequency of the CPU output in Hz.
+
+config AIC_CLK_AXI0_FREQ
+    int
+    default 200000000
+    help
+      The frequency of the AXI0 output in Hz.
+
+config AIC_CLK_AHB0_FREQ
+    int
+    default 200000000
+    help
+      The frequency of the AXI1 output in Hz.
+
+config AIC_CLK_APB0_FREQ
+    int
+    default 100000000
+    help
+      The frequency of the APB0 output in Hz.
+
+
+if ARCH_BOARD_D13X_DEMO88
+
+choice
+    prompt "Target Board Selection"
+    default AIC_TARGET_D13X_DEMO88_NOR
+    help
+      Select the target board configuration.
+
+config AIC_TARGET_D13X_DEMO88_NOR
+    bool "D13X Demo88 NOR"
+
+endchoice
+
+config AIC_TARGET_DIR_NAME
+    string
+    default "d13x_demo88-nor" if AIC_TARGET_D13X_DEMO88_NOR
+
+config AIC_ADBD_TCP_AUTOSTART
+    bool "Autostart ADB daemon over TCP"
+    default n
+    depends on SYSTEM_ADBD
+    depends on ADBD_TCP_SERVER
+    help
+      Start the NuttX ADB daemon from the board startup script. This is a
+      debug-only transport for boards without a usable UART console. The
+      daemon listens on the configured ADB TCP port after networking is
+      available.
+
+config AIC_EXBT
+    bool "ESP32S external Bluetooth UART0 mux"
+    default n
+    depends on AIC_USING_UART0
+    select I2C
+    select I2C_DRIVER
+    select AIC_USING_I2C
+    select AIC_I2C0
+    help
+      Enable board-level mode detection using one I2C0 pin. When the
+      selected pin is sampled low, UART0 is released from console/debug
+      use and remains available as /dev/ttyS0 for an external Bluetooth
+      module.
+
+if AIC_EXBT
+
+choice
+    prompt "External Bluetooth mode detect pin"
+    default AIC_EXBT_DETECT_I2C0_SCL
+
+config AIC_EXBT_DETECT_I2C0_SCL
+    bool "I2C0 SCL (J11-1 / PD.0)"
+
+config AIC_EXBT_DETECT_I2C0_SDA
+    bool "I2C0 SDA (J11-2 / PD.1)"
+
+endchoice
+
+config AIC_EXBT_DETECT_PIN
+    string
+    default "PD.0" if AIC_EXBT_DETECT_I2C0_SCL
+    default "PD.1" if AIC_EXBT_DETECT_I2C0_SDA
+
+config AIC_EXBT_I2C0_SCL_PIN
+    string
+    default "PD.0"
+
+config AIC_EXBT_I2C0_SDA_PIN
+    string
+    default "PD.1"
+
+config AIC_EXBT_UART_DEV
+    string "External Bluetooth UART device"
+    default "/dev/ttyS0"
+
+config AIC_EXBT_UART_BAUD
+    int "External Bluetooth UART baudrate"
+    default 115200
+
+endif
+
+endif

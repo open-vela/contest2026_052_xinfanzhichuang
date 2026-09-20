@@ -1,0 +1,7 @@
+config AIC_UART2_TEST
+    bool "UART2 raw test command"
+    default y if AIC_USING_UART2
+    depends on AIC_USING_UART2 && SERIAL
+    help
+        Provide uart2test for checking the D13x UART2 TX/RX path without
+        starting the Bluetooth stack.

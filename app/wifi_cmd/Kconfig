@@ -1,0 +1,7 @@
+config AIC_WIFI_CMD
+    bool "AIC8800 WiFi test commands"
+    default y if AIC_WLAN_AIC8800D40L
+    depends on AIC_WLAN_AIC8800D40L
+    ---help---
+        Provide wifistart, wifistop, wifiscan, wificonnect,
+        wifidisconnect and wifistatus commands for the local AIC8800 driver.

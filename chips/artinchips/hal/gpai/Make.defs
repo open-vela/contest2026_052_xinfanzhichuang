@@ -1,0 +1,17 @@
+DRV_SOURCE_PATH=hal
+GPAI_PATH=hal/gpai
+
+
+
+DEPPATH+=--dep-path $(GPAI_PATH) 
+VPATH+=:chip/$(GPAI_PATH)
+
+ARCH_GPAI_SRC_PATH:=$(AIC_SRCDIR)/$(GPAI_PATH)
+ARCH_GPAI_PARENT_SRC_PATH:=$(AIC_SRCDIR)/$(DRV_SOURCE_PATH)
+
+CFLAGS += ${INCDIR_PREFIX}$(ARCH_GPAI_SRC_PATH)
+
+# Include the  module.
+CHIP_CSRCS += $(GPAI_PATH)/gpai_info.c
+CHIP_CSRCS += $(GPAI_PATH)/hal_gpai.c
+

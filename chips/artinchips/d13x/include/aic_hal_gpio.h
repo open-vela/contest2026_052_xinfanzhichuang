@@ -1,0 +1,48 @@
+
+
+#ifndef __AIC_HAL_GPIO_D13X_H__
+#define __AIC_HAL_GPIO_D13X_H__
+
+
+#define GROUP_FACTOR 0x100
+#define PIN_FACTOR 0x4
+
+#define GEN_IN_STAT_REG 0x0
+#define GEN_OUT_CFG_REG 0x4
+#define GEN_TRQ_EN_REG 0x8
+#define GEN_IRQ_STAT_REG 0xC
+#define GEN_OUT_CLR_REG 0x10
+#define GEN_OUT_SET_REG 0x14
+#define GEN_OUT_TOG_REG 0x18
+#define PIN_CFG_REG 0x80
+
+/* PIN_CFG register field */
+
+#define PIN_FUN_SHIFT 0
+#define PIN_FUN_MASK 0xF
+#define PIN_DRV_SHIFT 4
+#define PIN_DRV_MASK 0x7
+#define PIN_PULL_SHIFT 8
+#define PIN_PULL_MASK 0x3
+#define PIN_IRQ_MODE_SHIFT 12
+#define PIN_IRQ_MODE_MASK 0x7
+#define PIN_DIR_SHIFT 16
+#define PIN_DIR_MASK 0x3
+#define PIN_DIR_INPUT 0x1
+#define PIN_DIR_OUTPUT 0x2
+#define PIN_SPE_IE_FORCE (0x1 << 18)
+#define PIN_DEBOUNCE_SHIFT 20
+#define PIN_DEBOUNCE_MASK 0xFFF
+
+#define PIN_GEN_OE BIT(17)
+#define PIN_GEN_IE BIT(16)
+#define PIN_GEN_IRQ_MODE_MASK GENMASK(14, 12)
+#define PIN_GEN_IRQ_MODE_SHIFT 12
+#define PIN_GEN_PIN_PULL_MASK GENMASK(9, 8)
+#define PIN_GEN_PIN_PULL_SHIFT 8
+#define PIN_GEN_PIN_DRV_MASK GENMASK(6, 4)
+#define PIN_GEN_PIN_DRV_SHIFT 4
+#define PIN_GEN_PIN_FUN GENMASK(3, 0)
+
+
+#endif //__AIC_HAL_GPIO_D13X_H__

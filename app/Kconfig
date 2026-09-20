@@ -1,0 +1,19 @@
+#
+# For a description of the syntax of this configuration file,
+# see the file kconfig-language.txt in the NuttX tools repository.
+#
+
+menu "AIC apps"
+
+source "../contest2026_052_xinfanzhichuang/app/event_btn_test/Kconfig"
+source "../contest2026_052_xinfanzhichuang/app/lvgl_app/Kconfig"
+source "../contest2026_052_xinfanzhichuang/app/uart2_test/Kconfig"
+source "../contest2026_052_xinfanzhichuang/app/bt_cmd/Kconfig"
+source "../contest2026_052_xinfanzhichuang/app/exbt_cmd/Kconfig"
+source "../contest2026_052_xinfanzhichuang/app/button_cmd/Kconfig"
+source "../contest2026_052_xinfanzhichuang/app/wifi_cmd/Kconfig"
+source "../contest2026_052_xinfanzhichuang/app/dmic_cmd/Kconfig"
+source "../contest2026_052_xinfanzhichuang/app/lcd_brightness/Kconfig"
+source "../contest2026_052_xinfanzhichuang/app/testpwm/Kconfig"
+source "../contest2026_052_xinfanzhichuang/app/testadc/Kconfig"
+endmenu # AIC apps

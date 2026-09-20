@@ -1,0 +1,15 @@
+#
+# Copyright (c) 2023-2024, ArtInChip Technology Co., Ltd.
+#
+# SPDX-License-Identifier: Apache-2.0
+#
+
+ifeq ($(CONFIG_ARCH_CHIP_CUSTOM),y)
+
+# Include Touch Drivers
+
+ifeq ($(CONFIG_AIC_TOUCH_PANEL_GT911),y)
+include chip/peripheral/touch/gt911/Make.defs
+endif
+
+endif

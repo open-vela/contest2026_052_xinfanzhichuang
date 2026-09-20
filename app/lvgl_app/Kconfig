@@ -1,0 +1,19 @@
+
+#
+# LVGL application Kconfig root.
+#
+menuconfig LVGL_APP
+	bool "LVGL application shell"
+	default y
+	depends on GRAPHICS_LVGL
+	depends on LV_USE_NUTTX
+	help
+		Enable the lvgl_app NuttX application entry. This shell keeps
+		the application registration and LVGL/NuttX initialization while
+		leaving all pages, resources, and business code empty for a new
+		UI implementation.
+if LVGL_APP
+source "$APPSDIR/../contest2026_052_xinfanzhichuang/app/lvgl_app/app_main/Kconfig"
+source "$APPSDIR/../contest2026_052_xinfanzhichuang/app/lvgl_app/ui_demo/Kconfig"
+source "$APPSDIR/../contest2026_052_xinfanzhichuang/app/lvgl_app/velaclaw/Kconfig"
+endif # LVGL_APP

@@ -1,0 +1,8 @@
+############################################################################
+# contest2026_052_xinfanzhichuang/framework/Make.defs
+############################################################################
+
+CONTEST_FRAMEWORK_DIR := $(APPDIR)/../$(CONTEST_PROJECT)/framework
+
+include $(wildcard $(CONTEST_FRAMEWORK_DIR)/connectivity/Make.defs)
+include $(wildcard $(CONTEST_FRAMEWORK_DIR)/input/Make.defs)

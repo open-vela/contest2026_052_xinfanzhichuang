@@ -1,0 +1,11 @@
+#
+# Copyright (c) 2024 ArtInChip Technology Co., Ltd.
+#
+# SPDX-License-Identifier: Apache-2.0
+#
+
+config AIC_EVENT_BTN_TEST
+	bool "ArtInChip Event Button Test"
+	depends on INPUT_BUTTONS
+	default n
+

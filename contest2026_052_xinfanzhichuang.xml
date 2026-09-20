@@ -9,8 +9,14 @@
   <include name="openvela.xml"/>
 
   <project path="contest2026_052_xinfanzhichuang" name="contest2026_052_xinfanzhichuang">
+<<<<<<< ours
     <linkfile src="app/hello_app" dest="packages/demos/contest2026_052_hello_app"/>
     <linkfile src="quickapp/hello_quickapp" dest="packages/apps/contest2026_052_hello_quickapp"/>
     <linkfile src="board/contest_board" dest="vendor/openvela/boards/contest2026_052_board"/>
+=======
+    <linkfile src="quickapp/hello_quickapp" dest="packages/apps/contest2026_052_hello_quickapp"/>
+    <linkfile src="board/contest_board" dest="vendor/openvela/boards/contest2026_052_board"/>
+    <linkfile src="." dest="apps/contest2026_052_xinfanzhichuang"/>
+>>>>>>> theirs
   </project>
 </manifest>

@@ -1,0 +1,33 @@
+DRV_SOURCE_PATH=hal
+CMU_PATH=hal/cmu
+
+
+
+DEPPATH+=--dep-path $(CMU_PATH) 
+VPATH+=:chip/$(CMU_PATH)
+
+ARCH_CMU_SRC_PATH:=$(AIC_SRCDIR)/$(CMU_PATH)
+ARCH_CMU_PARENT_SRC_PATH:=$(AIC_SRCDIR)/$(DRV_SOURCE_PATH)
+
+CFLAGS += ${INCDIR_PREFIX}$(ARCH_CMU_SRC_PATH)
+
+# Include the  module.
+CHIP_CSRCS += $(CMU_PATH)/aic_hal_clk.c
+CHIP_CSRCS += $(CMU_PATH)/aic_hal_fixed_rate_clk.c
+
+CHIP_CSRCS += $(CMU_PATH)/aic_hal_pll_clk.c
+
+ifeq ($(CONFIG_AIC_V1_CMU), y)
+CHIP_CSRCS += $(CMU_PATH)/v1/aic_hal_cpu_clk.c
+CHIP_CSRCS += $(CMU_PATH)/v1/aic_hal_disp_clk.c
+CHIP_CSRCS += $(CMU_PATH)/v1/aic_hal_fixed_parent_clk.c
+CHIP_CSRCS += $(CMU_PATH)/v1/aic_hal_multi_parent_clk.c
+CHIP_CSRCS += $(CMU_PATH)/v1/aic_hal_reset.c
+else
+CHIP_CSRCS += $(CMU_PATH)/v2/aic_hal_cpu_clk.c
+CHIP_CSRCS += $(CMU_PATH)/v2/aic_hal_disp_clk.c
+CHIP_CSRCS += $(CMU_PATH)/v2/aic_hal_fixed_parent_clk.c
+CHIP_CSRCS += $(CMU_PATH)/v2/aic_hal_multi_parent_clk.c
+CHIP_CSRCS += $(CMU_PATH)/v2/aic_hal_reset.c
+
+endif

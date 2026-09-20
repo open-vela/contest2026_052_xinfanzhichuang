@@ -1,0 +1,3 @@
+ifneq ($(CONFIG_AIC_EXBT_CMD),)
+CONFIGURED_APPS += $(APPDIR)/../contest2026_052_xinfanzhichuang/app/exbt_cmd
+endif

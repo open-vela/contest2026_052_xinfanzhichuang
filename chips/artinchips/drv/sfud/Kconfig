@@ -1,0 +1,8 @@
+
+config SFUD_USING_SFDP
+    bool "use SFUD_USING_SFDP"
+    default n
+
+config SFUD_USING_QSPI
+    bool "use SFUD_USING_QSPI"
+    default n

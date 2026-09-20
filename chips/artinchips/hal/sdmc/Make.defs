@@ -1,0 +1,19 @@
+# HAL Drivers: SDMC (Enabled if sdmc used)
+
+DRV_SOURCE_PATH=hal
+HAL_SDMMC_PATH=hal/sdmc
+
+DEPPATH+=--dep-path $(HAL_SDMMC_PATH) 
+VPATH+=:artinchips/$(HAL_SDMMC_PATH)
+
+ARCH_SDMC_SRC_PATH:=$(AIC_SRCDIR)/$(HAL_SDMMC_PATH)
+ARCH_SDMC_PARENT_SRC_PATH:=$(AIC_SRCDIR)/$(DRV_SOURCE_PATH)
+
+
+CFLAGS += ${INCDIR_PREFIX}$(ARCH_SDMC_SRC_PATH)
+
+
+# Include the  module.
+CHIP_CSRCS += $(HAL_SDMMC_PATH)/bouncebuf.c
+CHIP_CSRCS += $(HAL_SDMMC_PATH)/hal_sdmc.c
+

@@ -1,0 +1,195 @@
+#
+# AIC8800 WiFi Driver for NuttX/Vela
+#
+
+DRV_SOURCE_PATH=peripheral
+PER_WIFI_PATH=peripheral/wireless/aic8800
+PER_WIFI_PLAT_PATH=$(PER_WIFI_PATH)/platform
+PER_WIFI_FDRV_PATH=$(PER_WIFI_PATH)/fdrv
+PER_WIFI_WPAS_PATH=$(PER_WIFI_PATH)/wpas
+
+DEPPATH+=--dep-path $(PER_WIFI_PLAT_PATH)
+DEPPATH+=--dep-path $(PER_WIFI_FDRV_PATH)
+DEPPATH+=--dep-path $(PER_WIFI_WPAS_PATH)
+VPATH+=:chip/$(PER_WIFI_PLAT_PATH)
+VPATH+=:chip/$(PER_WIFI_FDRV_PATH)
+VPATH+=:chip/$(PER_WIFI_WPAS_PATH)
+
+ARCH_WIFI_SRC_PATH:=$(AIC_SRCDIR)/$(PER_WIFI_PATH)
+ARCH_WIFI_PLAT_SRC_PATH:=$(AIC_SRCDIR)/$(PER_WIFI_PLAT_PATH)
+ARCH_WIFI_FDRV_SRC_PATH:=$(AIC_SRCDIR)/$(PER_WIFI_FDRV_PATH)
+ARCH_WIFI_WPAS_SRC_PATH:=$(AIC_SRCDIR)/$(PER_WIFI_WPAS_PATH)
+ARCH_WIFI_DRV_SRC_PATH:=$(AIC_SRCDIR)/$(PER_WIFI_PATH)/host/driver
+
+CFLAGS += ${INCDIR_PREFIX}$(ARCH_WIFI_PLAT_SRC_PATH)
+CFLAGS += ${INCDIR_PREFIX}$(ARCH_WIFI_PLAT_SRC_PATH)/netif
+CFLAGS += ${INCDIR_PREFIX}$(ARCH_WIFI_PLAT_SRC_PATH)/rtos
+CFLAGS += ${INCDIR_PREFIX}$(ARCH_WIFI_PLAT_SRC_PATH)/wifi
+CFLAGS += ${INCDIR_PREFIX}$(ARCH_WIFI_PLAT_SRC_PATH)/fmac
+CFLAGS += ${INCDIR_PREFIX}$(ARCH_WIFI_PLAT_SRC_PATH)/hal
+CFLAGS += ${INCDIR_PREFIX}$(ARCH_WIFI_PLAT_SRC_PATH)/inc
+CFLAGS += ${INCDIR_PREFIX}$(ARCH_WIFI_PLAT_SRC_PATH)/utils/inc
+CFLAGS += ${INCDIR_PREFIX}$(ARCH_WIFI_SRC_PATH)/config
+CFLAGS += ${INCDIR_PREFIX}$(ARCH_WIFI_DRV_SRC_PATH)/drv_fhost
+CFLAGS += ${INCDIR_PREFIX}$(ARCH_WIFI_DRV_SRC_PATH)/drv_wifi
+CFLAGS += ${INCDIR_PREFIX}$(ARCH_WIFI_DRV_SRC_PATH)/drv_wlan
+CFLAGS += ${INCDIR_PREFIX}$(ARCH_WIFI_FDRV_SRC_PATH)/fw
+CFLAGS += ${INCDIR_PREFIX}$(ARCH_WIFI_FDRV_SRC_PATH)/macif
+CFLAGS += ${INCDIR_PREFIX}$(ARCH_WIFI_FDRV_SRC_PATH)/aicbt_bsp
+CFLAGS += ${INCDIR_PREFIX}$(ARCH_WIFI_FDRV_SRC_PATH)/layer_abstract/inc
+CFLAGS += ${INCDIR_PREFIX}$(ARCH_WIFI_FDRV_SRC_PATH)/layer_common/inc
+CFLAGS += ${INCDIR_PREFIX}$(ARCH_WIFI_WPAS_SRC_PATH)
+CFLAGS += ${INCDIR_PREFIX}$(ARCH_WIFI_WPAS_SRC_PATH)/src/utils
+CFLAGS += ${INCDIR_PREFIX}$(ARCH_WIFI_WPAS_SRC_PATH)/src
+CFLAGS += ${INCDIR_PREFIX}$(ARCH_WIFI_WPAS_SRC_PATH)/src/common
+CFLAGS += ${INCDIR_PREFIX}$(ARCH_WIFI_WPAS_SRC_PATH)/src/crypto
+CFLAGS += ${INCDIR_PREFIX}$(ARCH_WIFI_WPAS_SRC_PATH)/src/eap_common
+CFLAGS += ${INCDIR_PREFIX}$(ARCH_WIFI_WPAS_SRC_PATH)/src/eap_peer
+CFLAGS += ${INCDIR_PREFIX}$(ARCH_WIFI_WPAS_SRC_PATH)/src/eapol_supp
+CFLAGS += ${INCDIR_PREFIX}$(ARCH_WIFI_WPAS_SRC_PATH)/src/l2_packet
+CFLAGS += ${INCDIR_PREFIX}$(ARCH_WIFI_WPAS_SRC_PATH)/src/rsn_supp
+CFLAGS += ${INCDIR_PREFIX}$(ARCH_WIFI_WPAS_SRC_PATH)/src/drivers
+CFLAGS += ${INCDIR_PREFIX}$(ARCH_WIFI_WPAS_SRC_PATH)/src/ap
+CFLAGS += ${INCDIR_PREFIX}$(ARCH_WIFI_WPAS_SRC_PATH)/src/radius
+CFLAGS += ${INCDIR_PREFIX}$(ARCH_WIFI_WPAS_SRC_PATH)/src/eap_server
+CFLAGS += ${INCDIR_PREFIX}$(ARCH_WIFI_WPAS_SRC_PATH)/src/tls
+CFLAGS += ${INCDIR_PREFIX}$(ARCH_WIFI_WPAS_SRC_PATH)/src/wps
+CFLAGS += ${INCDIR_PREFIX}$(ARCH_WIFI_WPAS_SRC_PATH)/wpa_supplicant
+
+# Platform sources
+CHIP_CSRCS += $(PER_WIFI_PLAT_PATH)/netif/netif_port.c
+CHIP_CSRCS += $(PER_WIFI_PLAT_PATH)/netif/netal_sock.c
+CHIP_CSRCS += $(PER_WIFI_PLAT_PATH)/rtos/rtos_port.c
+CHIP_CSRCS += $(PER_WIFI_PLAT_PATH)/rtos/osal_debug.c
+CHIP_CSRCS += $(PER_WIFI_PLAT_PATH)/wifi/wifi_port.c
+CHIP_CSRCS += $(PER_WIFI_PLAT_PATH)/wifi/wifi_port_rtx.c
+CHIP_CSRCS += $(PER_WIFI_PLAT_PATH)/wifi/wifi_if_drv.c
+CHIP_CSRCS += $(PER_WIFI_PLAT_PATH)/fmac/fmac_port.c
+CHIP_CSRCS += $(PER_WIFI_PLAT_PATH)/fmac/userconfig.c
+CHIP_CSRCS += $(PER_WIFI_PLAT_PATH)/hal/sdio_port.c
+CHIP_CSRCS += $(PER_WIFI_PLAT_PATH)/hal/plat_port.c
+CHIP_CSRCS += $(PER_WIFI_PLAT_PATH)/utils/src/co_pool.c
+CHIP_CSRCS += $(PER_WIFI_PLAT_PATH)/utils/src/co_math.c
+CHIP_CSRCS += $(PER_WIFI_PLAT_PATH)/utils/src/co_version.c
+CHIP_CSRCS += $(PER_WIFI_PLAT_PATH)/utils/src/co_dlist.c
+CHIP_CSRCS += $(PER_WIFI_PLAT_PATH)/utils/src/co_ring.c
+CHIP_CSRCS += $(PER_WIFI_PLAT_PATH)/utils/src/co_list.c
+
+# FDRV sources (compiled from source)
+CHIP_CSRCS += $(PER_WIFI_FDRV_PATH)/fw/aic_fw.c
+CHIP_CSRCS += $(PER_WIFI_FDRV_PATH)/macif/aicwf_compat_8800dc.c
+CHIP_CSRCS += $(PER_WIFI_FDRV_PATH)/macif/cli_cmd.c
+CHIP_CSRCS += $(PER_WIFI_FDRV_PATH)/macif/rwnx_cmds.c
+CHIP_CSRCS += $(PER_WIFI_FDRV_PATH)/macif/rwnx_main.c
+CHIP_CSRCS += $(PER_WIFI_FDRV_PATH)/macif/rwnx_msg.c
+CHIP_CSRCS += $(PER_WIFI_FDRV_PATH)/macif/rwnx_msg_rx.c
+CHIP_CSRCS += $(PER_WIFI_FDRV_PATH)/macif/rwnx_msg_tx.c
+CHIP_CSRCS += $(PER_WIFI_FDRV_PATH)/macif/rwnx_platform.c
+CHIP_CSRCS += $(PER_WIFI_FDRV_PATH)/macif/rwnx_rx.c
+CHIP_CSRCS += $(PER_WIFI_FDRV_PATH)/macif/rwnx_utils.c
+CHIP_CSRCS += $(PER_WIFI_FDRV_PATH)/aicbt_bsp/aic_bsp_driver.c
+CHIP_CSRCS += $(PER_WIFI_FDRV_PATH)/aicbt_bsp/aic_bsp_main.c
+CHIP_CSRCS += $(PER_WIFI_FDRV_PATH)/layer_abstract/src/cli_al.c
+CHIP_CSRCS += $(PER_WIFI_FDRV_PATH)/layer_abstract/src/fmac_al.c
+CHIP_CSRCS += $(PER_WIFI_FDRV_PATH)/layer_abstract/src/netif_al.c
+CHIP_CSRCS += $(PER_WIFI_FDRV_PATH)/layer_abstract/src/sdio_al.c
+CHIP_CSRCS += $(PER_WIFI_FDRV_PATH)/layer_abstract/src/sys_al.c
+CHIP_CSRCS += $(PER_WIFI_FDRV_PATH)/layer_abstract/src/wifi_al.c
+CHIP_CSRCS += $(PER_WIFI_FDRV_PATH)/layer_common/src/hal_co.c
+CHIP_CSRCS += $(PER_WIFI_FDRV_PATH)/layer_common/src/netif_co.c
+CHIP_CSRCS += $(PER_WIFI_FDRV_PATH)/layer_common/src/sdio_co.c
+
+# WPA supplicant sources required by the prebuilt fhost WPA glue.  This is the
+# STA/WPA2-PSK subset; AP/P2P/WPS/SAE are disabled in build_config.h for NuttX.
+CHIP_CSRCS += $(PER_WIFI_WPAS_PATH)/src/common/hw_features_common.c
+CHIP_CSRCS += $(PER_WIFI_WPAS_PATH)/src/common/ieee802_11_common.c
+CHIP_CSRCS += $(PER_WIFI_WPAS_PATH)/src/common/wpa_common.c
+CHIP_CSRCS += $(PER_WIFI_WPAS_PATH)/src/crypto/aes-cbc.c
+CHIP_CSRCS += $(PER_WIFI_WPAS_PATH)/src/crypto/aes-internal.c
+CHIP_CSRCS += $(PER_WIFI_WPAS_PATH)/src/crypto/aes-internal-dec.c
+CHIP_CSRCS += $(PER_WIFI_WPAS_PATH)/src/crypto/aes-internal-enc.c
+CHIP_CSRCS += $(PER_WIFI_WPAS_PATH)/src/crypto/aes-omac1.c
+CHIP_CSRCS += $(PER_WIFI_WPAS_PATH)/src/crypto/aes-unwrap.c
+CHIP_CSRCS += $(PER_WIFI_WPAS_PATH)/src/crypto/aes-wrap.c
+CHIP_CSRCS += $(PER_WIFI_WPAS_PATH)/src/crypto/dh_group5.c
+CHIP_CSRCS += $(PER_WIFI_WPAS_PATH)/src/crypto/dh_groups.c
+CHIP_CSRCS += $(PER_WIFI_WPAS_PATH)/src/crypto/md5.c
+CHIP_CSRCS += $(PER_WIFI_WPAS_PATH)/src/crypto/md5-internal.c
+CHIP_CSRCS += $(PER_WIFI_WPAS_PATH)/src/crypto/random.c
+CHIP_CSRCS += $(PER_WIFI_WPAS_PATH)/src/crypto/rc4.c
+CHIP_CSRCS += $(PER_WIFI_WPAS_PATH)/src/crypto/sha1.c
+CHIP_CSRCS += $(PER_WIFI_WPAS_PATH)/src/crypto/sha1-internal.c
+CHIP_CSRCS += $(PER_WIFI_WPAS_PATH)/src/crypto/sha1-pbkdf2.c
+CHIP_CSRCS += $(PER_WIFI_WPAS_PATH)/src/crypto/sha1-prf.c
+CHIP_CSRCS += $(PER_WIFI_WPAS_PATH)/src/crypto/sha256.c
+CHIP_CSRCS += $(PER_WIFI_WPAS_PATH)/src/crypto/sha256-internal.c
+CHIP_CSRCS += $(PER_WIFI_WPAS_PATH)/src/crypto/sha256-prf.c
+CHIP_CSRCS += $(PER_WIFI_WPAS_PATH)/src/crypto/tls_none.c
+CHIP_CSRCS += $(PER_WIFI_WPAS_PATH)/src/drivers/driver_common.c
+CHIP_CSRCS += $(PER_WIFI_WPAS_PATH)/src/drivers/drivers.c
+CHIP_CSRCS += $(PER_WIFI_WPAS_PATH)/src/eap_common/chap.c
+CHIP_CSRCS += $(PER_WIFI_WPAS_PATH)/src/eap_common/eap_common.c
+CHIP_CSRCS += $(PER_WIFI_WPAS_PATH)/src/eap_peer/eap.c
+CHIP_CSRCS += $(PER_WIFI_WPAS_PATH)/src/eap_peer/eap_methods.c
+CHIP_CSRCS += $(PER_WIFI_WPAS_PATH)/src/eapol_supp/eapol_supp_sm.c
+CHIP_CSRCS += $(PER_WIFI_WPAS_PATH)/src/rsn_supp/pmksa_cache.c
+CHIP_CSRCS += $(PER_WIFI_WPAS_PATH)/src/rsn_supp/preauth.c
+CHIP_CSRCS += $(PER_WIFI_WPAS_PATH)/src/rsn_supp/wpa.c
+CHIP_CSRCS += $(PER_WIFI_WPAS_PATH)/src/rsn_supp/wpa_ie.c
+CHIP_CSRCS += $(PER_WIFI_WPAS_PATH)/src/utils/base64.c
+CHIP_CSRCS += $(PER_WIFI_WPAS_PATH)/src/utils/bitfield.c
+CHIP_CSRCS += $(PER_WIFI_WPAS_PATH)/src/utils/common.c
+CHIP_CSRCS += $(PER_WIFI_WPAS_PATH)/src/utils/eloop.c
+CHIP_CSRCS += $(PER_WIFI_WPAS_PATH)/src/utils/ip_addr.c
+CHIP_CSRCS += $(PER_WIFI_WPAS_PATH)/src/utils/uuid.c
+CHIP_CSRCS += $(PER_WIFI_WPAS_PATH)/src/utils/wpa_debug.c
+CHIP_CSRCS += $(PER_WIFI_WPAS_PATH)/src/utils/wpabuf.c
+CHIP_CSRCS += $(PER_WIFI_WPAS_PATH)/wpa_supplicant/blacklist.c
+CHIP_CSRCS += $(PER_WIFI_WPAS_PATH)/wpa_supplicant/bss.c
+CHIP_CSRCS += $(PER_WIFI_WPAS_PATH)/wpa_supplicant/config.c
+CHIP_CSRCS += $(PER_WIFI_WPAS_PATH)/wpa_supplicant/config_none.c
+CHIP_CSRCS += $(PER_WIFI_WPAS_PATH)/wpa_supplicant/ctrl_iface.c
+CHIP_CSRCS += $(PER_WIFI_WPAS_PATH)/wpa_supplicant/ctrl_iface_udp.c
+CHIP_CSRCS += $(PER_WIFI_WPAS_PATH)/wpa_supplicant/eap_register.c
+CHIP_CSRCS += $(PER_WIFI_WPAS_PATH)/wpa_supplicant/events.c
+CHIP_CSRCS += $(PER_WIFI_WPAS_PATH)/wpa_supplicant/notify.c
+CHIP_CSRCS += $(PER_WIFI_WPAS_PATH)/wpa_supplicant/op_classes.c
+CHIP_CSRCS += $(PER_WIFI_WPAS_PATH)/wpa_supplicant/scan.c
+CHIP_CSRCS += $(PER_WIFI_WPAS_PATH)/wpa_supplicant/sta_rrm.c
+CHIP_CSRCS += $(PER_WIFI_WPAS_PATH)/wpa_supplicant/wmm_ac.c
+CHIP_CSRCS += $(PER_WIFI_WPAS_PATH)/wpa_supplicant/wpa_supplicant.c
+CHIP_CSRCS += $(PER_WIFI_WPAS_PATH)/wpa_supplicant/wpas_glue.c
+
+
+
+
+
+
+AIC8800_HOST_DIR=$(AIC_SRCDIR)/$(PER_WIFI_PATH)/host
+AIC8800_LIB=$(AIC8800_HOST_DIR)/libwlan_aic8800_e907f.a
+AIC8800_GEN_DIR=$(AIC8800_HOST_DIR)/.generated
+AIC8800_PATCHED_LIB=$(AIC8800_GEN_DIR)/libwlan_aic8800_e907f.a
+AIC8800_OBJCOPY=$(CROSSDEV)objcopy
+
+# Prebuilt WiFi host library.  Keep the checked-in archive read-only; the
+# symbol-renamed archive is generated under .generated/ and linked from there.
+LDFLAGS += -L$(AIC8800_HOST_DIR)
+EXTRA_LIBS += $(AIC8800_PATCHED_LIB)
+
+# Link stubs for prebuilt library dependencies
+CHIP_CSRCS += $(PER_WIFI_PLAT_PATH)/wifi/wifi_netdev.c
+CHIP_CSRCS += $(PER_WIFI_PLAT_PATH)/wifi/wifi_link_stubs.c
+
+# Pre-process: rename libc-conflicting symbols in prebuilt library so our safe
+# wrappers (with NULL checks) are used instead.
+$(shell \
+  mkdir -p "$(AIC8800_GEN_DIR)" && \
+  if [ ! -f "$(AIC8800_PATCHED_LIB)" ] || [ "$(AIC8800_LIB)" -nt "$(AIC8800_PATCHED_LIB)" ]; then \
+    $(AIC8800_OBJCOPY) \
+      --redefine-sym strlen=aic8800_strlen \
+      --redefine-sym sprintf=aic8800_sprintf \
+      --redefine-sym snprintf=aic8800_snprintf \
+      --redefine-sym vsnprintf=aic8800_vsnprintf \
+      "$(AIC8800_LIB)" "$(AIC8800_PATCHED_LIB)" 2>/dev/null; \
+  fi \
+)

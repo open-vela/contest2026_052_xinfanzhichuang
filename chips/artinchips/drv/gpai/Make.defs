@@ -1,0 +1,23 @@
+#
+# Copyright (c) 2024, ArtInChip Technology Co., Ltd.
+#
+# SPDX-License-Identifier: Apache-2.0
+#
+
+
+
+DRV_SOURCE_PATH=drv
+DRV_GPAI_PATH=drv/gpai
+
+DEPPATH+=--dep-path $(DRV_GPAI_PATH) 
+VPATH+=:chip/$(DRV_GPAI_PATH)
+
+ARCH_GPAI_SRC_PATH:=$(AIC_SRCDIR)/$(DRV_GPAI_PATH)
+ARCH_GPAI_PARENT_SRC_PATH:=$(AIC_SRCDIR)/$(DRV_SOURCE_PATH)
+
+CFLAGS += ${INCDIR_PREFIX}$(ARCH_GPAI_SRC_PATH)
+
+# Include the  module.
+
+CHIP_CSRCS += $(DRV_GPAI_PATH)/aic_drv_gpai.c
+

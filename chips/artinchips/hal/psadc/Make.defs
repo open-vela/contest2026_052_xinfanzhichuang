@@ -1,0 +1,15 @@
+#
+# Copyright (c) 2026, ArtInChip Technology Co., Ltd.
+#
+# SPDX-License-Identifier: Apache-2.0
+#
+
+PSADC_PATH=hal/psadc
+
+DEPPATH+=--dep-path $(PSADC_PATH)
+VPATH+=:chip/$(PSADC_PATH)
+
+ARCH_PSADC_SRC_PATH:=$(AIC_SRCDIR)/$(PSADC_PATH)
+CFLAGS += ${INCDIR_PREFIX}$(ARCH_PSADC_SRC_PATH)
+
+CHIP_CSRCS += $(PSADC_PATH)/hal_psadc.c

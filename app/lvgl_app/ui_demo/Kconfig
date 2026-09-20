@@ -1,0 +1,215 @@
+menu "Quick Control Panel Demo"
+	depends on LVGL_APP
+
+config LVGL_APP_UI_DEMO
+	bool "Enable quick control panel module"
+	default y
+	help
+		Enable the app/lvgl_app/ui_demo quick control panel module.
+		When disabled, only the LVGL application entry and display
+		initialization remain, and this demo page is not created.
+
+if LVGL_APP_UI_DEMO
+
+config LVGL_APP_UI_DEMO_THREE_COLUMN
+	bool "Enable LVGL9 three-column main screen"
+	default y
+	help
+		Enable the fixed 1024x600 LVGL9 three-column layout:
+		left 220 px, center 584 px, and right 220 px.
+
+config LVGL_APP_UI_DEMO_LEFT_SCROLL
+	bool "Enable vertical scrolling for left function buttons"
+	default y
+	depends on LVGL_APP_UI_DEMO_THREE_COLUMN
+	help
+		Allow vertical scrolling when the left-side function buttons
+		exceed the visible height.
+
+config LVGL_APP_UI_DEMO_CENTER_SCROLL
+	bool "Enable vertical scrolling for the center device list"
+	default y
+	depends on LVGL_APP_UI_DEMO_THREE_COLUMN
+	help
+		Allow vertical scrolling when the center WiFi or Bluetooth
+		device list exceeds the visible height.
+
+config LVGL_APP_UI_DEMO_WIFI_BACKEND
+	bool "Enable AIC8800 WiFi backend for the demo"
+	default y if AIC_WLAN_AIC8800D40L
+	depends on LVGL_APP_UI_DEMO_THREE_COLUMN
+	depends on AIC_WLAN_AIC8800D40L
+	select AIC_WIFI_CMD
+	help
+		Enable real WiFi start, scan, connect, and stop operations in
+		the quick control panel. When this option is disabled or hidden
+		because the AIC8800 driver is disabled, the panel still builds
+		and shows WiFi as unavailable.
+
+config LVGL_APP_UI_DEMO_WIFI_TASK_PRIORITY
+	int "WiFi background task priority"
+	default 100
+	depends on LVGL_APP_UI_DEMO_THREE_COLUMN
+	help
+		POSIX task priority used for WiFi start, scan, connect, and
+		stop commands.
+
+config LVGL_APP_UI_DEMO_WIFI_TASK_STACKSIZE
+	int "WiFi background task stack size"
+	default 16384
+	depends on LVGL_APP_UI_DEMO_THREE_COLUMN
+	help
+		Stack size for the WiFi background task. The default reserves
+		16 KB for scan results, command output, and connection
+		parameters.
+
+config LVGL_APP_UI_DEMO_WIFI_SCAN_WAIT_MS
+	int "WiFi scan wait time"
+	default 5000
+	depends on LVGL_APP_UI_DEMO_THREE_COLUMN
+	help
+		Wait time passed to wifiscan, in milliseconds.
+
+config LVGL_APP_UI_DEMO_WIFI_CONNECT_TIMEOUT_MS
+	int "WiFi connection timeout"
+	default 15000
+	depends on LVGL_APP_UI_DEMO_THREE_COLUMN
+	help
+		Connection timeout passed to wificonnect, in milliseconds.
+
+config LVGL_APP_UI_DEMO_BLUETOOTH_BACKEND
+	bool "Enable AIC Bluetooth backend for the demo"
+	default y if AIC_BT_BT8858A && BLUETOOTH_SERVER
+	depends on LVGL_APP_UI_DEMO_THREE_COLUMN
+	depends on AIC_BT_BT8858A
+	depends on BLUETOOTH_SERVER
+	select AIC_BT_CMD
+	help
+		Enable real Bluetooth startup, passive GATT server, and stop
+		operations in the quick control panel. The UI calls the
+		existing btstart, bluetoothd, btle gattserver, and btstop
+		entry points.
+
+config LVGL_APP_UI_DEMO_BLUETOOTH_TASK_PRIORITY
+	int "Bluetooth background task priority"
+	default 100
+	depends on LVGL_APP_UI_DEMO_THREE_COLUMN
+	help
+		POSIX task priority used for Bluetooth btstart, bluetoothd,
+		GATT server, and btstop commands.
+
+config LVGL_APP_UI_DEMO_BLUETOOTH_TASK_STACKSIZE
+	int "Bluetooth background task stack size"
+	default 16384
+	depends on LVGL_APP_UI_DEMO_THREE_COLUMN
+	help
+		Stack size for Bluetooth background tasks.
+
+config LVGL_APP_UI_DEMO_BLUETOOTH_DAEMON_STACKSIZE
+	int "Bluetooth daemon task stack size"
+	default 16384
+	depends on LVGL_APP_UI_DEMO_THREE_COLUMN
+	help
+		Stack size used when the UI starts bluetoothd.
+
+config LVGL_APP_UI_DEMO_BLUETOOTH_GATT_STACKSIZE
+	int "Bluetooth GATT server task stack size"
+	default 8192
+	depends on LVGL_APP_UI_DEMO_THREE_COLUMN
+	help
+		Stack size used for the persistent btle gattserver task.
+
+config LVGL_APP_UI_DEMO_BLUETOOTH_DEVICE_NAME
+	string "Bluetooth GATT device name"
+	default "AIC8800-Vela"
+	depends on LVGL_APP_UI_DEMO_THREE_COLUMN
+	help
+		Device name passed to btle gattserver.
+
+config LVGL_APP_UI_DEMO_NETINFO_TASK_PRIORITY
+	int "Time and weather background task priority"
+	default 100
+	depends on LVGL_APP_UI_DEMO_THREE_COLUMN
+	help
+		POSIX task priority used to fetch network time and weather
+		after WiFi connects.
+
+config LVGL_APP_UI_DEMO_NETINFO_TASK_STACKSIZE
+	int "Time and weather background task stack size"
+	default 24576
+	depends on LVGL_APP_UI_DEMO_THREE_COLUMN
+	help
+		Stack size for the time and weather task. The default reserves
+		24 KB for HTTP requests and JSON parsing.
+
+config LVGL_APP_UI_DEMO_NETINFO_HTTP_TIMEOUT_MS
+	int "Time and weather HTTP timeout"
+	default 8000
+	depends on LVGL_APP_UI_DEMO_THREE_COLUMN
+	help
+		Connect, send, and receive timeout for the time and weather
+		HTTP APIs, in milliseconds.
+
+config LVGL_APP_UI_DEMO_WEATHER_CITY_NAME
+	string "Weather display city name"
+	default "Beijing"
+	depends on LVGL_APP_UI_DEMO_THREE_COLUMN
+	help
+		City name shown in the weather widget. This value is also used
+		as the UI fallback when an API fails or omits the city field.
+
+config LVGL_APP_UI_DEMO_WEATHER_AMAP_CITY
+	string "Amap weather city code"
+	default "110101"
+	depends on LVGL_APP_UI_DEMO_THREE_COLUMN
+	help
+		Adcode used by the Amap Web Service weather API. The default
+		110101 is Dongcheng District, Beijing.
+
+config LVGL_APP_UI_DEMO_WEATHER_AMAP_KEY
+	string "Amap weather Web Service key"
+	default ""
+	depends on LVGL_APP_UI_DEMO_THREE_COLUMN
+	help
+		Amap Web Service key. Leave empty to let the demo use the
+		no-key fallback weather API.
+
+config LVGL_APP_UI_DEMO_WEATHER_FALLBACK_CITY_ID
+	string "No-key fallback weather city code"
+	default "101010100"
+	depends on LVGL_APP_UI_DEMO_THREE_COLUMN
+	help
+		City code used by the t.weather.itboy.net fallback weather API.
+		The default 101010100 is Beijing.
+
+config LVGL_APP_UI_DEMO_MOCK_WIRELESS_DATA
+	bool "Enable static wireless placeholder data"
+	default y
+	depends on LVGL_APP_UI_DEMO_THREE_COLUMN
+	help
+		Keep static placeholder data for wireless devices. The WiFi
+		page uses real command scanning when the backend is enabled;
+		the Bluetooth page uses real command scanning when its backend
+		is enabled. This option continues to provide placeholder data
+		for features that are not wired to real services yet.
+
+config LVGL_APP_UI_DEMO_VERTICAL_SLIDERS
+	bool "Enable vertical brightness and volume sliders"
+	default y
+	depends on LVGL_APP_UI_DEMO_THREE_COLUMN
+	help
+		Enable the brightness and volume sliders in the right column.
+		The sliders update UI values; touch events do not reconfigure
+		low-level backlight or audio drivers directly.
+
+config LVGL_APP_UI_DEMO_STATUS_WIDGETS
+	bool "Enable time, temperature, and humidity widgets"
+	default y
+	depends on LVGL_APP_UI_DEMO_THREE_COLUMN
+	help
+		Enable the time, temperature, and humidity widgets in the right
+		column, and keep the external data refresh interface.
+
+endif # LVGL_APP_UI_DEMO
+
+endmenu

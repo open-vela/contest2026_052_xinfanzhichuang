@@ -1,0 +1,12 @@
+#
+# Copyright (c) 2024 ArtInChip Technology Co., Ltd.
+#
+# SPDX-License-Identifier: Apache-2.0
+#
+
+config AIC_TEST_ADC
+	bool "ArtInChip ADC Test"
+	depends on ADC
+	default n
+	---help---
+		Enable the ArtInChip ADC test application

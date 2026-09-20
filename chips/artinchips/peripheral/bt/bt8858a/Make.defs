@@ -1,0 +1,35 @@
+#
+# BT8858A Driver for NuttX/Vela
+#
+
+DRV_SOURCE_PATH=peripheral
+PER_BT_PATH=peripheral/bt/bt8858a
+
+DEPPATH+=--dep-path $(PER_BT_PATH)
+VPATH+=:chip/$(PER_BT_PATH)
+
+ARCH_BT_SRC_PATH:=$(AIC_SRCDIR)/$(PER_BT_PATH)
+ARCH_BT_PARENT_SRC_PATH:=$(AIC_SRCDIR)/$(DRV_SOURCE_PATH)
+
+CFLAGS += ${INCDIR_PREFIX}$(ARCH_BT_SRC_PATH)
+CFLAGS += ${INCDIR_PREFIX}$(ARCH_BT_SRC_PATH)/bt_osal
+CFLAGS += ${INCDIR_PREFIX}$(ARCH_BT_SRC_PATH)/bt_stack/legacy_goc/include
+CFLAGS += ${INCDIR_PREFIX}$(ARCH_BT_SRC_PATH)/bt_stack/legacy_goc/core
+CFLAGS += ${INCDIR_PREFIX}$(ARCH_BT_SRC_PATH)/bt_stack/legacy_goc/control
+CFLAGS += ${INCDIR_PREFIX}$(ARCH_BT_SRC_PATH)/bt_stack/legacy_goc/profiles/hid
+CFLAGS += ${INCDIR_PREFIX}$(ARCH_BT_SRC_PATH)/bt_controller/hci_h4
+CFLAGS += ${INCDIR_PREFIX}$(ARCH_BT_SRC_PATH)/bt_controller/vela_compat
+CFLAGS += ${INCDIR_PREFIX}$(ARCH_BT_PARENT_SRC_PATH)
+
+# Legacy GOC command stack kept for btstart --legacy / btstop --legacy.
+CHIP_CSRCS += $(PER_BT_PATH)/bt_stack/legacy_goc/control/bt_control.c
+CHIP_CSRCS += $(PER_BT_PATH)/bt_osal/bt_os.c
+CHIP_CSRCS += $(PER_BT_PATH)/bt_osal/bt_os_nuttx.c
+CHIP_CSRCS += $(PER_BT_PATH)/bt_stack/legacy_goc/core/bt_core.c
+CHIP_CSRCS += $(PER_BT_PATH)/bt_stack/legacy_goc/core/bt_task.c
+CHIP_CSRCS += $(PER_BT_PATH)/bt_stack/legacy_goc/profiles/hid/hid_control.c
+
+ifeq ($(CONFIG_AIC_BT_BT8858A_VELA_HCI),y)
+CHIP_CSRCS += $(PER_BT_PATH)/bt_controller/hci_h4/aic_bt_hci.c
+CHIP_CSRCS += $(PER_BT_PATH)/bt_controller/vela_compat/aic_bt_service_compat.c
+endif

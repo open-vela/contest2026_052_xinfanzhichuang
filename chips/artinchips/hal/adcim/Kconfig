@@ -1,0 +1,3 @@
+config  AIC_ADCIM_DELTA_ADC
+  bool "using delta adc"
+	default n

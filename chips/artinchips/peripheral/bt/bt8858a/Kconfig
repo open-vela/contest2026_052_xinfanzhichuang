@@ -1,0 +1,29 @@
+config AIC_BT_BT8858A
+    bool "Using BT8858A/8852A driver"
+    default n
+
+if AIC_BT_BT8858A
+
+config AIC_BT_START
+    bool "Auto-start BT at boot"
+    default n
+    ---help---
+        Start the BT8858A BT driver automatically at boot.
+
+config AIC_BT_START_PRIORITY
+    int "BT start task priority"
+    default 120
+    depends on AIC_BT_START
+
+config AIC_BT_START_STACKSIZE
+    int "BT start task stack size"
+    default 8192
+    depends on AIC_BT_START
+
+endif # AIC_BT_BT8858A
+
+config AIC_BT_STOP
+    bool "Enable btstop command"
+    default y if AIC_BT_START
+    ---help---
+        Enable the btstop command to stop the BT stack.

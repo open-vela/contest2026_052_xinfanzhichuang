@@ -1,0 +1,17 @@
+# HAL Drivers: DMA (Enabled if dma used)
+
+DRV_SOURCE_PATH=hal
+HAL_DMA_PATH=hal/dma
+
+DEPPATH+=--dep-path $(HAL_DMA_PATH) 
+VPATH+=:artinchips/$(HAL_DMA_PATH)
+
+ARCH_DMA_SRC_PATH:=$(AIC_SRCDIR)/$(HAL_DMA_PATH)
+ARCH_DMA_PARENT_SRC_PATH:=$(AIC_SRCDIR)/$(DRV_SOURCE_PATH)
+
+
+CFLAGS += ${INCDIR_PREFIX}$(ARCH_DMA_SRC_PATH)
+
+
+# Include the  module.
+CHIP_CSRCS += $(HAL_DMA_PATH)/hal_dma.c

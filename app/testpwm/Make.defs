@@ -1,0 +1,9 @@
+#
+# Copyright (c) 2024 ArtInChip Technology Co., Ltd.
+#
+# SPDX-License-Identifier: Apache-2.0
+#
+
+ifeq ($(CONFIG_AIC_TEST_PWM),y)
+CONFIGURED_APPS += $(APPDIR)/../contest2026_052_xinfanzhichuang/app/testpwm
+endif

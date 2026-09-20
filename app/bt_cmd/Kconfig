@@ -1,0 +1,16 @@
+config AIC_BT_CMD
+    bool "AIC BT command wrappers"
+    default y if AIC_BT_BT8858A
+    depends on AIC_BT_BT8858A
+    help
+        Provide btstart, btstop, bthci, and btle commands for the local AIC
+        Bluetooth driver.
+
+config AIC_BT_CMD_CLASSIC_DIAG
+    bool "Expose Classic BR/EDR diagnostic commands"
+    default n
+    depends on AIC_BT_CMD
+    help
+        Enable bthci commands that issue Classic BR/EDR HCI operations,
+        such as inquiry and discoverable mode. Keep this disabled for
+        AIC8800D40L BLE-only boards.

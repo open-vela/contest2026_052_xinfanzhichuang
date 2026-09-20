@@ -1,0 +1,3 @@
+ifeq ($(CONFIG_AIC_DMIC_CMD),y)
+CONFIGURED_APPS += $(APPDIR)/../contest2026_052_xinfanzhichuang/app/dmic_cmd
+endif

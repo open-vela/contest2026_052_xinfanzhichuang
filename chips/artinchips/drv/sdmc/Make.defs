@@ -1,0 +1,21 @@
+#
+# Copyright (c) 2023-2024, ArtInChip Technology Co., Ltd.
+#
+# SPDX-License-Identifier: Apache-2.0
+#
+
+DRV_SOURCE_PATH=drv
+DRV_SDMC_PATH=drv/sdmc
+
+DEPPATH+=--dep-path $(DRV_SDMC_PATH) 
+VPATH+=:chip/$(DRV_SDMC_PATH)
+
+ARCH_SDMC_SRC_PATH:=$(AIC_SRCDIR)/$(DRV_SDMC_PATH)
+ARCH_SDMC_PARENT_SRC_PATH:=$(AIC_SRCDIR)/$(DRV_SOURCE_PATH)
+
+CFLAGS += ${INCDIR_PREFIX}$(ARCH_SDMC_SRC_PATH)
+
+# Include the  module.
+
+CHIP_CSRCS += $(DRV_SDMC_PATH)/aic_sdio.c
+CHIP_CSRCS += $(DRV_SDMC_PATH)/aic_mmcsd.c

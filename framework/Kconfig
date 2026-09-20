@@ -1,0 +1,6 @@
+menu "AIC framework"
+
+source "../contest2026_052_xinfanzhichuang/framework/connectivity/Kconfig"
+source "../contest2026_052_xinfanzhichuang/framework/input/Kconfig"
+
+endmenu # AIC framework

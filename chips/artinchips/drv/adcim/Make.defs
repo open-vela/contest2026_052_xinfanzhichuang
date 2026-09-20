@@ -1,0 +1,20 @@
+#
+# Copyright (c) 2023-2024, ArtInChip Technology Co., Ltd.
+#
+# SPDX-License-Identifier: Apache-2.0
+#
+
+DRV_SOURCE_PATH=drv
+DRV_ADCIM_PATH=drv/adcim
+
+DEPPATH+=--dep-path $(DRV_ADCIM_PATH) 
+VPATH+=:chip/$(DRV_ADCIM_PATH)
+
+ARCH_ADCIM_SRC_PATH:=$(AIC_SRCDIR)/$(DRV_ADCIM_PATH)
+ARCH_ADCIM_PARENT_SRC_PATH:=$(AIC_SRCDIR)/$(DRV_SOURCE_PATH)
+
+CFLAGS += ${INCDIR_PREFIX}$(ARCH_ADCIM_SRC_PATH)
+# Include the  module.
+
+CHIP_CSRCS += $(DRV_ADCIM_PATH)/drv_adcim.c
+

@@ -1,0 +1,22 @@
+#
+# Copyright (c) 2023-2024, ArtInChip Technology Co., Ltd.
+#
+# SPDX-License-Identifier: Apache-2.0
+#
+
+DRV_SOURCE_PATH=peripheral
+PER_TOUCH_PATH=peripheral/touch/gt911
+
+
+DEPPATH+=--dep-path $(PER_TOUCH_PATH) 
+VPATH+=:chip/$(PER_TOUCH_PATH)
+
+ARCH_TOUCH_SRC_PATH:=$(AIC_SRCDIR)/$(PER_TOUCH_PATH)
+ARCH_TOUCH_PARENT_SRC_PATH:=$(AIC_SRCDIR)/$(DRV_SOURCE_PATH)
+
+CFLAGS += ${INCDIR_PREFIX}$(ARCH_TOUCH_SRC_PATH)
+CFLAGS += ${INCDIR_PREFIX}$(ARCH_TOUCH_PARENT_SRC_PATH)
+
+# Include the  module.
+
+CHIP_CSRCS += $(PER_TOUCH_PATH)/gt911.c

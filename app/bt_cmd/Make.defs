@@ -1,0 +1,3 @@
+ifneq ($(CONFIG_AIC_BT_BT8858A),)
+CONFIGURED_APPS += $(APPDIR)/../contest2026_052_xinfanzhichuang/app/bt_cmd
+endif
